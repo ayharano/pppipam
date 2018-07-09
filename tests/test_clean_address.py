@@ -36,3 +36,10 @@ class clean_address_TestCase(unittest.TestCase):
                     clean_address(invalid_str),
                     None,
                 )
+
+    def test_clean_address_valid_ipv6_address_as_str(self):
+        """Test for valid IPv6 Addresses correctly instantiated from str."""
+        self.assertEqual(
+            clean_address("2001:db8::f00"),
+            ipaddress.IPv6Address("2001:db8::f00"),
+        )
