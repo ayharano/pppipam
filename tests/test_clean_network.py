@@ -20,15 +20,3 @@ class clean_network_TestCase(unittest.TestCase):
                     clean_network(ipv4_str),
                     ipaddress.IPv4Network(ipv4_str),
                 )
-        self.assertEqual(
-            clean_network("10.0.0.0/16"),
-            ipaddress.IPv4Network("10.0.0.0/16"),
-        )
-        self.assertEqual(
-            clean_network("0.0.0.0/0"),
-            ipaddress.IPv4Network("0.0.0.0/0"),
-        )
-        self.assertEqual(
-            clean_network("192.0.2.0/24"),
-            ipaddress.IPv4Network("192.0.2.0/24"),
-        )
