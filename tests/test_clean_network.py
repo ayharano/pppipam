@@ -27,3 +27,19 @@ class clean_network_TestCase(unittest.TestCase):
             clean_network(""),
             None,
         )
+        self.assertEqual(
+            clean_network("address"),
+            None,
+        )
+        self.assertEqual(
+            clean_network("192.0.2.256"),
+            None,
+        )
+        self.assertEqual(
+            clean_network("20018:db8::"),
+            None,
+        )
+        self.assertEqual(
+            clean_network("2001:db8::/32"),
+            None,
+        )
