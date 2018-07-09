@@ -48,3 +48,19 @@ class clean_address_TestCase(unittest.TestCase):
                     clean_address(ipv6_str),
                     ipaddress.IPv6Address(ipv6_str),
                 )
+
+    def test_clean_address_invalid_ipv6_address_as_str(self):
+        """Test for invalid IPv6 Addresses from str to None."""
+        for invalid_str in (
+            "",
+            "address",
+            "20018:db8::",
+            "192.0.2.256",
+            "192.0.2.0/24",
+            "2001:db8::/32",
+        ):
+            with self.subTest(invalid_str=invalid_str):
+                self.assertEqual(
+                    clean_address(invalid_str),
+                    None,
+                )
