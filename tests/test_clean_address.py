@@ -21,22 +21,6 @@ class clean_address_TestCase(unittest.TestCase):
                     ipaddress.IPv4Address(ipv4_str),
                 )
 
-    def test_clean_address_invalid_ipv4_address_as_str(self):
-        """Test for invalid IPv4 Addresses from str to None."""
-        for invalid_str in (
-            "",
-            "address",
-            "192.0.2.256",
-            "20018:db8::",
-            "192.0.2.0/24",
-            "2001:db8::/32",
-        ):
-            with self.subTest(invalid_str=invalid_str):
-                self.assertEqual(
-                    clean_address(invalid_str),
-                    None,
-                )
-
     def test_clean_address_valid_ipv6_address_as_str(self):
         """Test for valid IPv6 Addresses correctly instantiated from str."""
         for ipv6_str in (
@@ -50,8 +34,8 @@ class clean_address_TestCase(unittest.TestCase):
                     ipaddress.IPv6Address(ipv6_str),
                 )
 
-    def test_clean_address_invalid_ipv6_address_as_str(self):
-        """Test for invalid IPv6 Addresses from str to None."""
+    def test_clean_address_invalid_ip_address_as_str(self):
+        """Test for invalid IP Addresses from str to None."""
         for invalid_str in (
             "",
             "address",
