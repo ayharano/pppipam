@@ -66,3 +66,12 @@ class clean_network_TestCase(unittest.TestCase):
                     clean_network(ipaddress.IPv4Network(ipv4_str)),
                     ipaddress.IPv4Network(ipv4_str),
                 )
+
+    def test_clean_network_valid_ipv6_network_as_instances(self):
+        """Test for valid IPv6 Networks instantiated from IPv6Network."""
+        for ipv6_str in ("::/0", "2001:db8::/32", "fedc:ba98:7654:3210::/64"):
+            with self.subTest(ipv6_str=ipv6_str):
+                self.assertEqual(
+                    clean_network(ipaddress.IPv6Network(ipv6_str)),
+                    ipaddress.IPv6Network(ipv6_str),
+                )
