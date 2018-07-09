@@ -4,9 +4,16 @@
 """Module with helper functions."""
 
 import ipaddress
+import typing
 
 
-def clean_address(address_parameter):
+IPAddress = typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+IPAddressParameter = typing.Union[str, IPAddress]
+
+
+def clean_address(
+    address_parameter: IPAddressParameter
+) -> typing.Optional[IPAddress]:
     """Process given parameter as an Address instance.
 
     If parameter results into a valid IPv4 or IPv6 address,
