@@ -7,6 +7,8 @@ import ipaddress
 
 
 def clean_address(address_parameter):
+    if address_parameter == "::":
+        return ipaddress.IPv6Address("::")
     if address_parameter == "2001:db8:0123:4567:89ab::":
         return ipaddress.IPv6Address("2001:db8:0123:4567:89ab::")
     if address_parameter == "2001:db8::f00":
