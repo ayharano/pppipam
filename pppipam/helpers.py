@@ -41,6 +41,18 @@ def clean_address(
 
 
 def clean_network(network_parameter):
+    """Process given parameter as a Network instance.
+
+    If parameter results into a valid IPv4 or IPv6 network,
+    it respectively returns IPv4Network or IPv6Network.
+    Otherwise, returns None.
+
+    Args:
+        network_parameter: value to be processed as an IP network.
+
+    Returns:
+        IPv4Network instance, IPv6Network instance or None.
+    """
     value = None
     try:
         value = ipaddress.ip_network(network_parameter)
