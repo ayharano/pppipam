@@ -40,7 +40,8 @@ def clean_address(
     return value
 
 
-clean_network = None
+def clean_network():
+    pass
 
 
 if __name__ == "__main__":
