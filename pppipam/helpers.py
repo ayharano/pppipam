@@ -2,3 +2,5 @@
 # -*- coding: utf-8 -*-
 
 """Module with helper functions."""
+
+clean_address = None
