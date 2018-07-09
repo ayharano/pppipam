@@ -3,4 +3,5 @@
 
 """Module with helper functions."""
 
-clean_address = None
+def clean_address():
+    pass
