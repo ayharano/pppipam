@@ -64,3 +64,12 @@ class clean_address_TestCase(unittest.TestCase):
                     clean_address(invalid_str),
                     None,
                 )
+
+    def test_clean_address_valid_ipv4_address_as_instances(self):
+        """Test for valid IPv4 Addresses instantiated from IPv4Address."""
+        for ipv4_str in ("192.0.2.1", "203.0.113.128", "198.51.100.255"):
+            with self.subTest(ipv4_str=ipv4_str):
+                self.assertEqual(
+                    clean_address(ipaddress.IPv4Address(ipv4_str)),
+                    ipaddress.IPv4Address(ipv4_str),
+                )
