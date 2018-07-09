@@ -10,7 +10,10 @@ def clean_address(address_parameter):
     try:
         value = ipaddress.IPv6Address(address_parameter)
     except ipaddress.AddressValueError:
-        value = ipaddress.IPv4Address(address_parameter)
+        try:
+            value = ipaddress.IPv4Address(address_parameter)
+        except ipaddress.AddressValueError:
+            pass
     if value:
         return value
     if address_parameter == "::":
