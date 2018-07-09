@@ -41,6 +41,8 @@ def clean_address(
 
 
 def clean_network(network_parameter):
+    if network_parameter == "0.0.0.0/0":
+        return ipaddress.IPv4Network("0.0.0.0/0")
     return ipaddress.IPv4Network("10.0.0.0/16")
 
 
