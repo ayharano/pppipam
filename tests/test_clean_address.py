@@ -27,6 +27,7 @@ class clean_address_TestCase(unittest.TestCase):
             "",
             "address",
             "192.0.2.256",
+            "20018:db8::",
             "192.0.2.0/24",
             "2001:db8::/32",
         ):
@@ -41,7 +42,7 @@ class clean_address_TestCase(unittest.TestCase):
         for ipv6_str in (
             "2001:db8::f00",
             "2001:db8:0123:4567:89ab::",
-            "2001:db8:0123:4567:89ab::",
+            "::",
         ):
             with self.subTest(ipv6_str=ipv6_str):
                 self.assertEqual(
@@ -79,7 +80,7 @@ class clean_address_TestCase(unittest.TestCase):
         for ipv6_str in (
             "2001:db8::f00",
             "2001:db8:0123:4567:89ab::",
-            "2001:db8:0123:4567:89ab::",
+            "::",
         ):
             with self.subTest(ipv6_str=ipv6_str):
                 self.assertEqual(
