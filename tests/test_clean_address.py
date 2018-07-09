@@ -73,3 +73,16 @@ class clean_address_TestCase(unittest.TestCase):
                     clean_address(ipaddress.IPv4Address(ipv4_str)),
                     ipaddress.IPv4Address(ipv4_str),
                 )
+
+    def test_clean_address_valid_ipv6_address_as_instances(self):
+        """Test for valid IPv6 Addresses instantiated from IPv6Address."""
+        for ipv6_str in (
+            "2001:db8::f00",
+            "2001:db8:0123:4567:89ab::",
+            "2001:db8:0123:4567:89ab::",
+        ):
+            with self.subTest(ipv6_str=ipv6_str):
+                self.assertEqual(
+                    clean_address(ipaddress.IPv6Address(ipv6_str)),
+                    ipaddress.IPv6Address(ipv6_str),
+                )
