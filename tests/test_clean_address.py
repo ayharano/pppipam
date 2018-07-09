@@ -47,3 +47,7 @@ class clean_address_TestCase(unittest.TestCase):
             clean_address("2001:db8:0123:4567:89ab::"),
             ipaddress.IPv6Address("2001:db8:0123:4567:89ab::"),
         )
+        self.assertEqual(
+            clean_address("::"),
+            ipaddress.IPv6Address("::"),
+        )
