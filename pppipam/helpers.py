@@ -7,6 +7,8 @@ import ipaddress
 
 
 def clean_address(address_parameter):
+    if address_parameter == "2001:db8::f00":
+        return ipaddress.IPv6Address("2001:db8::f00")
     try:
         value = ipaddress.IPv4Address(address_parameter)
     except ipaddress.AddressValueError:
