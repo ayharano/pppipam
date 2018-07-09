@@ -9,6 +9,9 @@ import typing
 
 IPAddress = typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 IPAddressParameter = typing.Union[str, IPAddress]
+IPNetwork = typing.Union[ipaddress.IPv4Network, ipaddress.IPv6Network]
+IPNetworkParameter = typing.Union[str, IPNetwork]
+
 
 
 def clean_address(
@@ -40,7 +43,9 @@ def clean_address(
     return value
 
 
-def clean_network(network_parameter):
+def clean_network(
+    network_parameter: IPNetworkParameter
+) -> typing.Optional[IPNetwork]:
     """Process given parameter as a Network instance.
 
     If parameter results into a valid IPv4 or IPv6 network,
