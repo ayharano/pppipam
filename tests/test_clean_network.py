@@ -49,3 +49,17 @@ class clean_network_TestCase(unittest.TestCase):
             clean_network("fedc:ba98:7654:3210::/64"),
             ipaddress.IPv6Network("fedc:ba98:7654:3210::/64"),
         )
+
+    def test_clean_network_invalid_ipv6_network_as_str(self):
+        """Test for invalid IPv6 Networks from str to None."""
+        for invalid_str in (
+            "",
+            "address",
+            "192.0.2.256",
+            "20018:db8::",
+        ):
+            with self.subTest(invalid_str=invalid_str):
+                self.assertEqual(
+                    clean_network(invalid_str),
+                    None,
+                )
