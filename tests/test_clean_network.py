@@ -20,3 +20,10 @@ class clean_network_TestCase(unittest.TestCase):
                     clean_network(ipv4_str),
                     ipaddress.IPv4Network(ipv4_str),
                 )
+
+    def test_clean_network_invalid_ipv4_network_as_str(self):
+        """Test for invalid IPv4 Networks from str to None."""
+        self.assertEqual(
+            clean_network(""),
+            None,
+        )
