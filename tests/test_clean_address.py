@@ -28,7 +28,6 @@ class clean_address_TestCase(unittest.TestCase):
             "address",
             "192.0.2.256",
             "192.0.2.0/24",
-            "2001:db8::",
             "2001:db8::/32",
         ):
             with self.subTest(invalid_str=invalid_str):
