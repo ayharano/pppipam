@@ -13,6 +13,12 @@ def clean_address(address_parameter):
     it respectively returns IPv4Address or IPv6Address.
     Otherwise, returns None.
 
+    >>> clean_address('invalid address')
+    >>> clean_address('203.0.113.123')
+    IPv4Address('203.0.113.123')
+    >>> clean_address('::abcd:1234')
+    IPv6Address('::abcd:1234')
+
     Args:
         address_parameter: value to be processed as an IP address.
 
@@ -25,3 +31,9 @@ def clean_address(address_parameter):
     except (ipaddress.AddressValueError, ValueError):
         pass
     return value
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()
