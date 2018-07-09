@@ -41,7 +41,12 @@ def clean_address(
 
 
 def clean_network(network_parameter):
-    return ipaddress.IPv4Network(network_parameter)
+    value = None
+    try:
+        value = ipaddress.IPv4Network(network_parameter)
+    except ipaddress.AddressValueError:
+        pass
+    return value
 
 
 if __name__ == "__main__":
