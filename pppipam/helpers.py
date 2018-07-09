@@ -41,7 +41,11 @@ def clean_address(
 
 
 def clean_network(network_parameter):
-    value = ipaddress.ip_network(network_parameter)
+    value = None
+    try:
+        value = ipaddress.ip_network(network_parameter)
+    except ValueError:
+        pass
     return value
     value = None
     try:
