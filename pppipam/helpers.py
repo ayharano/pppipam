@@ -7,4 +7,8 @@ import ipaddress
 
 
 def clean_address(address_parameter):
-    return ipaddress.IPv4Address(address_parameter)
+    try:
+        value = ipaddress.IPv4Address(address_parameter)
+    except ipaddress.AddressValueError:
+        return None
+    return value
