@@ -42,3 +42,7 @@ class clean_network_TestCase(unittest.TestCase):
             clean_network("::/0"),
             ipaddress.IPv6Network("::/0"),
         )
+        self.assertEqual(
+            clean_network("2001:db8::/32"),
+            ipaddress.IPv6Network("2001:db8::/32"),
+        )
