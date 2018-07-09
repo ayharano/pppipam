@@ -40,8 +40,8 @@ class clean_network_TestCase(unittest.TestCase):
         for ipv6_str in ("::/0", "2001:db8::/32", "fedc:ba98:7654:3210::/64"):
             with self.subTest(ipv6_str=ipv6_str):
                 self.assertEqual(
-                    clean_network("::/0"),
-                    ipaddress.IPv6Network("::/0"),
+                    clean_network(ipv6_str),
+                    ipaddress.IPv6Network(ipv6_str),
                 )
 
     def test_clean_network_invalid_ipv6_network_as_str(self):
