@@ -63,3 +63,12 @@ class clean_network_TestCase(unittest.TestCase):
                     clean_network(invalid_str),
                     None,
                 )
+
+    def test_clean_network_valid_ipv4_network_as_instances(self):
+        """Test for valid IPv4 Networks instantiated from IPv4Network."""
+        for ipv4_str in ("10.0.0.0/16", "0.0.0.0/0", "192.0.2.0/24"):
+            with self.subTest(ipv4_str=ipv4_str):
+                self.assertEqual(
+                    clean_network(ipaddress.IPv4Network(ipv4_str)),
+                    ipaddress.IPv4Network(ipv4_str),
+                )
