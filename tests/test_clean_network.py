@@ -23,6 +23,18 @@ class clean_network_TestCase(unittest.TestCase):
 
     def test_clean_network_invalid_ipv4_network_as_str(self):
         """Test for invalid IPv4 Networks from str to None."""
+        for invalid_str in (
+            "",
+            "address",
+            "192.0.2.256",
+            "20018:db8::",
+            "2001:db8::/32",
+        ):
+            with self.subTest(invalid_str=invalid_str):
+                self.assertEqual(
+                    clean_network(invalid_str),
+                    None,
+                )
         self.assertEqual(
             clean_network(""),
             None,
