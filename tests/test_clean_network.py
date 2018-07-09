@@ -22,3 +22,7 @@ class clean_network_TestCase(unittest.TestCase):
             clean_network("0.0.0.0/0"),
             ipaddress.IPv4Network("0.0.0.0/0"),
         )
+        self.assertEqual(
+            clean_network("192.0.2.0/24"),
+            ipaddress.IPv4Network("192.0.2.0/24"),
+        )
