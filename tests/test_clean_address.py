@@ -35,4 +35,16 @@ class clean_address_TestCase(unittest.TestCase):
             clean_address("192.0.2.256"),
             None,
         )
+        self.assertEqual(
+            clean_address("192.0.2.0/24"),
+            None,
+        )
+        self.assertEqual(
+            clean_address("2001:db8::"),
+            None,
+        )
+        self.assertEqual(
+            clean_address("2001:db8::/32"),
+            None,
+        )
 
