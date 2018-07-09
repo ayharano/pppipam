@@ -40,6 +40,9 @@ def clean_address(
     return value
 
 
+clean_network = None
+
+
 if __name__ == "__main__":
     import doctest
 
