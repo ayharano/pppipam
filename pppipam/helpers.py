@@ -47,6 +47,12 @@ def clean_network(network_parameter):
     it respectively returns IPv4Network or IPv6Network.
     Otherwise, returns None.
 
+    >>> clean_network("invalid network")
+    >>> clean_network("10.0.0.0/8")
+    IPv4Network('10.0.0.0/8')
+    >>> clean_network("fe80::/64")
+    IPv6Network('fe80::/64')
+
     Args:
         network_parameter: value to be processed as an IP network.
 
