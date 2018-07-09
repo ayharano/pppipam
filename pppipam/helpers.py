@@ -47,24 +47,6 @@ def clean_network(network_parameter):
     except ValueError:
         pass
     return value
-    value = None
-    try:
-        value = ipaddress.IPv6Network(network_parameter)
-    except ipaddress.AddressValueError:
-        pass
-    if value:
-        return value
-    if network_parameter == "fedc:ba98:7654:3210::/64":
-        return ipaddress.IPv6Network(network_parameter)
-    if network_parameter == "2001:db8::/32":
-        return ipaddress.IPv6Network(network_parameter)
-    if network_parameter == "::/0":
-        return ipaddress.IPv6Network(network_parameter)
-    try:
-        value = ipaddress.IPv4Network(network_parameter)
-    except ipaddress.AddressValueError:
-        pass
-    return value
 
 
 if __name__ == "__main__":
