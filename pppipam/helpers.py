@@ -10,6 +10,6 @@ def clean_address(address_parameter):
     value = None
     try:
         value = ipaddress.ip_address(address_parameter)
-    except ipaddress.AddressValueError:
+    except (ipaddress.AddressValueError, ValueError):
         pass
     return value
