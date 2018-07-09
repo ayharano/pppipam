@@ -41,6 +41,8 @@ def clean_address(
 
 
 def clean_network(network_parameter):
+    value = ipaddress.ip_network(network_parameter)
+    return value
     value = None
     try:
         value = ipaddress.IPv6Network(network_parameter)
