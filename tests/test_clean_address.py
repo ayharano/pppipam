@@ -20,3 +20,10 @@ class clean_address_TestCase(unittest.TestCase):
                     clean_address(ipv4_str),
                     ipaddress.IPv4Address(ipv4_str),
                 )
+
+    def test_clean_address_invalid_ipv4_address_as_str(self):
+        """Test for invalid IPv4 Addresses from str to None."""
+        self.assertEqual(
+            clean_address(""),
+            None,
+        )
