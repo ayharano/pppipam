@@ -9,12 +9,7 @@ import ipaddress
 def clean_address(address_parameter):
     value = None
     try:
-        value = ipaddress.IPv6Address(address_parameter)
+        value = ipaddress.ip_address(address_parameter)
     except ipaddress.AddressValueError:
-        try:
-            value = ipaddress.IPv4Address(address_parameter)
-        except ipaddress.AddressValueError:
-            pass
-    if value:
-        return value
+        pass
     return value
