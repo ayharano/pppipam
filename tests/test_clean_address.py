@@ -27,3 +27,12 @@ class clean_address_TestCase(unittest.TestCase):
             clean_address(""),
             None,
         )
+        self.assertEqual(
+            clean_address("address"),
+            None,
+        )
+        self.assertEqual(
+            clean_address("192.0.2.256"),
+            None,
+        )
+
