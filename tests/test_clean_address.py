@@ -22,3 +22,7 @@ class clean_address_TestCase(unittest.TestCase):
             clean_address("203.0.113.128"),
             ipaddress.IPv4Address("203.0.113.128"),
         )
+        self.assertEqual(
+            clean_address("198.51.100.255"),
+            ipaddress.IPv4Address("198.51.100.255"),
+        )
