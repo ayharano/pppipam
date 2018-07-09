@@ -40,7 +40,7 @@ def clean_address(
     return value
 
 
-def clean_network():
+def clean_network(network_parameter):
     pass
 
 
