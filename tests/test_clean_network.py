@@ -35,3 +35,10 @@ class clean_network_TestCase(unittest.TestCase):
                     clean_network(invalid_str),
                     None,
                 )
+
+    def test_clean_network_valid_ipv6_network_as_str(self):
+        """Test for valid IPv6 Network correctly instantiated from str."""
+        self.assertEqual(
+            clean_network("::/0"),
+            ipaddress.IPv6Network("::/0"),
+        )
