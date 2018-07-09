@@ -37,18 +37,12 @@ class clean_network_TestCase(unittest.TestCase):
 
     def test_clean_network_valid_ipv6_network_as_str(self):
         """Test for valid IPv6 Network correctly instantiated from str."""
-        self.assertEqual(
-            clean_network("::/0"),
-            ipaddress.IPv6Network("::/0"),
-        )
-        self.assertEqual(
-            clean_network("2001:db8::/32"),
-            ipaddress.IPv6Network("2001:db8::/32"),
-        )
-        self.assertEqual(
-            clean_network("fedc:ba98:7654:3210::/64"),
-            ipaddress.IPv6Network("fedc:ba98:7654:3210::/64"),
-        )
+        for ipv6_str in ("::/0", "2001:db8::/32", "fedc:ba98:7654:3210::/64"):
+            with self.subTest(ipv6_str=ipv6_str):
+                self.assertEqual(
+                    clean_network("::/0"),
+                    ipaddress.IPv6Network("::/0"),
+                )
 
     def test_clean_network_invalid_ipv6_network_as_str(self):
         """Test for invalid IPv6 Networks from str to None."""
