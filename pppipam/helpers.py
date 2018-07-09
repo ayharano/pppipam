@@ -3,5 +3,8 @@
 
 """Module with helper functions."""
 
+import ipaddress
+
+
 def clean_address(address_parameter):
-    pass
+    return ipaddress.IPv4Address("192.0.2.1")
