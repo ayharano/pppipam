@@ -3,6 +3,7 @@
 
 """Tests for clean_network function of `pppipam` package."""
 
+import ipaddress
 import unittest
 
 from pppipam.helpers import clean_network
