@@ -42,6 +42,12 @@ def clean_address(
 
 def clean_network(network_parameter):
     value = None
+    try:
+        value = ipaddress.IPv6Network(network_parameter)
+    except ipaddress.AddressValueError:
+        pass
+    if value:
+        return value
     if network_parameter == "fedc:ba98:7654:3210::/64":
         return ipaddress.IPv6Network(network_parameter)
     if network_parameter == "2001:db8::/32":
