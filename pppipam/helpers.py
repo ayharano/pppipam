@@ -42,6 +42,8 @@ def clean_address(
 
 def clean_network(network_parameter):
     value = None
+    if network_parameter == "2001:db8::/32":
+        return ipaddress.IPv6Network(network_parameter)
     if network_parameter == "::/0":
         return ipaddress.IPv6Network(network_parameter)
     try:
