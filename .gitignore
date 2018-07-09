@@ -1,0 +1,21 @@
+# Ignoring virtual environment
+venv
+.venv
+
+# Ignoring compiled Python byproducts
+*.py[doc]
+__pycache__
+
+# Ignoring environmental variables
+.env
+
+# Ignoring macOS system files
+.DS_Store
+.localized
+
+# Ignoring log files
+*.log
+
+# Ignoring vim files
+*~
+*.sw[po]
