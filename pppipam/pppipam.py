@@ -2,3 +2,5 @@
 # -*- coding: utf-8 -*-
 
 """PPPIPAM main module."""
+
+AddressSpace = None
