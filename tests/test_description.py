@@ -60,3 +60,18 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     ),
                     True,
                 )
+
+    def test_describe_address_empty_str_valueerror(self):
+        """Empty str description should raise ValueError."""
+        empty_str_description = False
+        try:
+            self.address_space.describe(
+                address='123.123.123.123',
+                description=""
+            )
+        except ValueError:
+            empty_str_description = True
+        self.assertTrue(
+            empty_str_description,
+            "Empty str description should raise ValueError",
+        )
