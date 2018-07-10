@@ -25,7 +25,10 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             self.address_space.describe()
         except TypeError:
             no_empty_arguments = True
-        self.assertTrue(no_empty_arguments)
+        self.assertTrue(
+            no_empty_arguments,
+            "Empty arguments should not be accepted in describe",
+        )
 
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
