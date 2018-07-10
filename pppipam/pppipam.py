@@ -4,4 +4,4 @@
 """PPPIPAM main module."""
 
 class AddressSpace:
-    pass
+    describe = None
