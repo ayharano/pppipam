@@ -18,6 +18,15 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         """Validate if address_space is instance of AddressSpace."""
         self.assertIsInstance(self.address_space, AddressSpace)
 
+    def test_describe_keyword_only_no_empty_arguments(self):
+        """describe method as keyword only, without default parameters."""
+        no_empty_arguments = False
+        try:
+            self.address_space.describe()
+        except TypeError:
+            no_empty_arguments = True
+        self.assertTrue(no_empty_arguments)
+
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
         self.assertIs(
