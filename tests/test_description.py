@@ -45,6 +45,9 @@ class AddressSpace_description_TestCase(unittest.TestCase):
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
         self.assertIs(
-            self.address_space.describe('123.123.123.123', "123 is nice"),
+            self.address_space.describe(
+                address='123.123.123.123',
+                description="123 is nice"
+            ),
             True,
         )
