@@ -5,4 +5,4 @@
 
 class AddressSpace:
     def describe(self, address, description):
-        pass
+        return True
