@@ -44,6 +44,22 @@ class AddressSpace_description_TestCase(unittest.TestCase):
 
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
+        for parameters in (
+            ('123.123.123.123', "123 is nice"),
+            ('203.0.113.129', "Second subnet gateway"),
+            ('192.0.2.123', "123 is nice, test net"),
+            ('2001:db8::abcd:ef12', "ipv6 doc address"),
+            ('2000::', "first global address for now"),
+            ('fe80::', "even link-local?"),
+        ):
+            with self.subTest(parameters=parameters):
+                self.assertIs(
+                    self.address_space.describe(
+                        address=parameters[0],
+                        description=parameters[1],
+                    ),
+                    True,
+                )
         self.assertIs(
             self.address_space.describe(
                 address='123.123.123.123',
