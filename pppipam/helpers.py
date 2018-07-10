@@ -38,7 +38,7 @@ def clean_address(
     value = None
     try:
         value = ipaddress.ip_address(address_parameter)
-    except (ipaddress.AddressValueError, ValueError):
+    except ValueError:
         pass
     return value
 
