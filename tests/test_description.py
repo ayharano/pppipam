@@ -30,6 +30,18 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             "Empty arguments should not be accepted in describe",
         )
 
+    def test_describe_keyword_only_no_positional_arguments(self):
+        """describe method as keyword only, without positional parameters."""
+        no_positional_arguments = False
+        try:
+            self.address_space.describe("203.0.113.128", "test net address")
+        except TypeError:
+            no_positional_arguments = True
+        self.assertTrue(
+            no_positional_arguments,
+            "No positional argument should be accepted in describe",
+        )
+
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
         self.assertIs(
