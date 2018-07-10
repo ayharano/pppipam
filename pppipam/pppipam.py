@@ -3,5 +3,5 @@
 
 """PPPIPAM main module."""
 
-def AddressSpace():
+class AddressSpace:
     pass
