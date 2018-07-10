@@ -4,6 +4,7 @@
 """Module with helper functions."""
 
 import ipaddress
+import logging
 import typing
 
 
@@ -11,7 +12,6 @@ IPAddress = typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 IPAddressParameter = typing.Union[str, IPAddress]
 IPNetwork = typing.Union[ipaddress.IPv4Network, ipaddress.IPv6Network]
 IPNetworkParameter = typing.Union[str, IPNetwork]
-
 
 
 def clean_address(
@@ -39,6 +39,9 @@ def clean_address(
     try:
         value = ipaddress.ip_address(address_parameter)
     except ValueError:
+        logging.info(
+            "'%s' could not instantiate an IP address", address_parameter
+        )
         pass
     return value
 
@@ -68,6 +71,9 @@ def clean_network(
     try:
         value = ipaddress.ip_network(network_parameter)
     except ValueError:
+        logging.info(
+            "'%s' could not instantiate an IP network", network_parameter
+        )
         pass
     return value
 
