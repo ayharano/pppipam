@@ -4,5 +4,5 @@
 """PPPIPAM main module."""
 
 class AddressSpace:
-    def describe(self):
+    def describe(self, address, description):
         pass
