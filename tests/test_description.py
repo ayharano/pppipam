@@ -61,13 +61,28 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     True,
                 )
 
+    def test_describe_description_not_str_typeerror(self):
+        """Non-str description should raise TypeError."""
+        non_str_description = False
+        try:
+            self.address_space.describe(
+                ip_parameter='123.123.123.123',
+                description=None,
+            )
+        except TypeError:
+            non_str_description = True
+        self.assertTrue(
+            non_str_description,
+            "Non str description should raise TypeError",
+        )
+
     def test_describe_empty_str_valueerror(self):
         """Empty str description should raise ValueError."""
         empty_str_description = False
         try:
             self.address_space.describe(
                 ip_parameter='123.123.123.123',
-                description=""
+                description="",
             )
         except ValueError:
             empty_str_description = True
