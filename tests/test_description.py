@@ -55,18 +55,18 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             with self.subTest(parameters=parameters):
                 self.assertIs(
                     self.address_space.describe(
-                        address=parameters[0],
+                        ip_parameter=parameters[0],
                         description=parameters[1],
                     ),
                     True,
                 )
 
-    def test_describe_address_empty_str_valueerror(self):
+    def test_describe_empty_str_valueerror(self):
         """Empty str description should raise ValueError."""
         empty_str_description = False
         try:
             self.address_space.describe(
-                address='123.123.123.123',
+                ip_parameter='123.123.123.123',
                 description=""
             )
         except ValueError:
