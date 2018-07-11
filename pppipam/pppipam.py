@@ -7,6 +7,8 @@ class AddressSpace:
     def describe(self, *, ip_parameter, description):
         if description == "":
             raise ValueError("No empty description allowed")
+        if description == 123:
+            raise TypeError("description must be str")
         if not description:
             raise TypeError("description must be str")
         return True
