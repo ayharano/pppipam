@@ -4,7 +4,7 @@
 """PPPIPAM main module."""
 
 class AddressSpace:
-    def describe(self, *, address, description):
+    def describe(self, *, ip_parameter, description):
         if description == "":
             raise ValueError("No empty description allowed")
         return True
