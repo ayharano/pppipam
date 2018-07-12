@@ -4,10 +4,14 @@
 """PPPIPAM main module."""
 
 import ipaddress
+import typing
 
 import pppipam.helpers as helpers
 
 
+IPParameter = typing.Union[
+    helpers.IPAddressParameter, helpers.IPNetworkParameter
+]
 IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
@@ -15,13 +19,15 @@ IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 class AddressSpace:
     """IP addresses and networks description manager."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize private attributes."""
         self.__description = dict()
         self.__networks = dict()
         self.__addresses = dict()
 
-    def describe(self, *, ip_parameter, description):
+    def describe(
+        self, *, ip_parameter: IPParameter, description: str
+    ) -> bool:
         """Insert an IP address or network with a description.
 
         Args:
@@ -98,7 +104,7 @@ class AddressSpace:
 
         return described
 
-    def description(self, ip_parameter):
+    def description(self, ip_parameter: IPParameter) -> typing.Optional[str]:
         """Retrieve a description of an IP address or IP network.
 
         Args:
