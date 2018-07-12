@@ -39,6 +39,11 @@ class AddressSpace:
         if not as_address and not as_network:
             raise TypeError("ip_parameter must be a valid IP parameter")
 
+        if as_address in self.__description:
+            return self.__description[as_address]
+        elif as_network in self.__description:
+            return self.__description[as_network]
+
         if ip_parameter == "0.0.0.0":
             return "address 0 for ipv4"
         if ip_parameter == "2001:db8::2018:7:12":
