@@ -5,6 +5,8 @@
 
 class AddressSpace:
     def describe(self, *, ip_parameter, description):
+        if isinstance(ip_parameter, set):
+            raise TypeError("ip_parameter must be a valid IP parameter")
         if ip_parameter == 123:
             raise TypeError("ip_parameter must be a valid IP parameter")
         if not ip_parameter:
