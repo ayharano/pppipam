@@ -23,4 +23,5 @@ class AddressSpace:
 
         return True
 
-    description = None
+    def description(self):
+        pass
