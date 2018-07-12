@@ -8,6 +8,9 @@ import pppipam.helpers as helpers
 
 class AddressSpace:
 
+    def __init__(self):
+        self.__description = dict()
+
     def describe(self, *, ip_parameter, description):
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
@@ -20,6 +23,11 @@ class AddressSpace:
             raise ValueError("No empty description allowed")
         if not isinstance(description, str):
             raise TypeError("description must be str")
+
+        if as_address:
+            self.__description[as_address] = description
+        elif as_network:
+            self.__description[as_network] = description
 
         return True
 
