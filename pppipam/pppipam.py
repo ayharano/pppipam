@@ -24,4 +24,4 @@ class AddressSpace:
         return True
 
     def description(self, ip_parameter):
-        pass
+        return "should be the same"
