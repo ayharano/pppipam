@@ -162,6 +162,22 @@ class AddressSpace_description_TestCase(unittest.TestCase):
 
     def test_describe_then_description(self):
         """describe then description of IP object should return same str."""
+        for describe_pair in (
+            ("203.0.113.128/25", "should be the same"),
+            ("2001:db8::2018:7:12", "hey! an IPv6 Address"),
+            ("0.0.0.0", "address 0 for ipv4"),
+        ):
+            with self.subTest(describe_pair=describe_pair):
+                self.address_space.describe(
+                    description=describe_pair[1],
+                    ip_parameter=describe_pair[0],
+                )
+                self.assertEqual(
+                    self.address_space.description(
+                        describe_pair[0],
+                    ),
+                    describe_pair[1],
+                )
         network = "203.0.113.128/25"
         description_str = "should be the same"
         self.address_space.describe(
