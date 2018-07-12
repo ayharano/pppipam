@@ -157,3 +157,14 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             ),
             description_str,
         )
+        description_str = "hey! an IPv6 Address"
+        self.address_space.describe(
+            ip_parameter="2001:db8::2018:7:12",
+            description=description_str,
+        )
+        self.assertEqual(
+            self.address_space.description(
+                description_str,
+            ),
+            description_str,
+        )
