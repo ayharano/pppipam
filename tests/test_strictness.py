@@ -43,3 +43,15 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
             True,
             "AddressSpace's default strict value expected to be True.",
         )
+
+    def test_address_space_init_cannot_accept_positional_arguments(self):
+        """init method as keyword only, without positional parameters."""
+        no_positional_arguments = False
+        try:
+            AddressSpace(False)
+        except TypeError:
+            no_positional_arguments = True
+        self.assertTrue(
+            no_positional_arguments,
+            "No positional argument should be accepted in __init__",
+        )
