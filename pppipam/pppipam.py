@@ -88,7 +88,8 @@ class AddressSpace:
                     (ipaddress.IPv4Network, ipaddress.IPv6Network),
                 ):
                     continue
-                if as_network.subnet_of(tentative_net):
+                if (as_network.version == tentative_net.version
+                        and as_network.subnet_of(tentative_net)):
                     return str("")
 
         if as_network in (
