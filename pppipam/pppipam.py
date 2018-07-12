@@ -3,6 +3,7 @@
 
 """PPPIPAM main module."""
 
+import dataclasses
 import ipaddress
 import typing
 
@@ -16,6 +17,7 @@ IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
+@dataclasses.dataclass
 class AddressSpace:
     """IP addresses and networks description manager."""
 
