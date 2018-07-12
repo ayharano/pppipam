@@ -28,7 +28,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         cannot_be_assigned = False
         try:
             address_space.strict = False
-        except AttibuteError:
+        except AttributeError:
             cannot_be_assigned = True
         self.assertTrue(
             cannot_be_assigned,
