@@ -179,7 +179,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     describe_pair[1],
                 )
 
-    def test_describe_network_then_emptry_address_description(self):
+    def test_describe_network_then_empty_address_description(self):
         """describe an IP network and retrieve empty str description of
            an address if it is in network range and
            not explicitly described."""
