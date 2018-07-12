@@ -36,6 +36,37 @@ class AddressSpace:
         Raises:
             TypeError: parameters not of expected type.
             ValueError: invalid description value.
+
+        doctest example:
+            >>> as_ = AddressSpace()
+            >>> as_.describe(description='Famous IPv4 loopback address',
+            ...              ip_parameter='127.0.0.1')
+            True
+            >>> as_.describe(
+            ...    description='Not so famous IPv6 loopback address',
+            ...    ip_parameter='::1')
+            True
+            >>> as_.describe(ip_parameter="0.0.0.0/0",
+            ...              description="all IPv4 network")
+            True
+            >>> as_.describe(description="all IPv6 network",
+            ...              ip_parameter="::/0")
+            True
+            >>> as_.describe(description="", ip_parameter="::1")
+            Traceback (most recent call last):
+                ...
+            ValueError: No empty description allowed
+            >>> as_.describe(description="valid description",
+            ...              ip_parameter="invalid IP parameter")
+            Traceback (most recent call last):
+                ...
+            TypeError: ip_parameter must be a valid IP parameter
+            >>> as_.describe(description="int IP parameter",
+            ...              ip_parameter=123)
+            Traceback (most recent call last):
+                ...
+            TypeError: ip_parameter must not be int
+            >>>
         """
 
         if description == "":
@@ -84,6 +115,55 @@ class AddressSpace:
 
         Raises:
             TypeError: parameters not of expected type.
+
+        doctest example:
+            >>> as_ = AddressSpace()
+            >>> as_.describe(
+            ...     description='An IPv6 documentation network',
+            ...     ip_parameter='2001:db8:abcd::/48')
+            True
+            >>> as_.describe(description='An IPv6 address in doc net',
+            ...              ip_parameter='2001:db8:abcd::1234')
+            True
+            >>> as_.describe(ip_parameter='198.51.100.0/24',
+            ...              description="TEST-NET-2 (RFC5735)")
+            True
+            >>> as_.describe(description="An address in test net",
+            ...              ip_parameter="198.51.100.123")
+            True
+            >>> as_.description("2001:db8:abcd::/48")
+            'An IPv6 documentation network'
+            >>> as_.description("2001:db8:abcd::1234")
+            'An IPv6 address in doc net'
+            >>> as_.description("2001:db8:abcd::98:7654:3210")
+            ''
+            >>> as_.description("2001:db8:abcd::/64")
+            ''
+            >>> as_.description("2001:db8:1234::/48")
+            >>> as_.description("fe80::")
+            >>> as_.description("198.51.100.0/24")
+            'TEST-NET-2 (RFC5735)'
+            >>> as_.description("198.51.100.123")
+            'An address in test net'
+            >>> as_.description("198.51.100.100")
+            ''
+            >>> as_.description("198.51.100.128/25")
+            ''
+            >>> as_.description("198.51.99.0")
+            >>> as_.description("198.51.123.0/24")
+            >>> as_.description(None)
+            Traceback (most recent call last):
+                ...
+            TypeError: ip_parameter must be a valid IP parameter
+            >>> as_.description('abc')
+            Traceback (most recent call last):
+                ...
+            TypeError: ip_parameter must be a valid IP parameter
+            >>> as_.description(123)
+            Traceback (most recent call last):
+                ...
+            TypeError: ip_parameter must not be int
+            >>>
         """
 
         if isinstance(ip_parameter, int):
