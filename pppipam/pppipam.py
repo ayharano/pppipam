@@ -78,6 +78,19 @@ class AddressSpace:
                 if as_address in tentative_net:
                     return str("")
 
+        if isinstance(
+            as_network,
+            (ipaddress.IPv4Network, ipaddress.IPv6Network),
+        ):
+            for tentative_net in self.__description:
+                if not isinstance(
+                    tentative_net,
+                    (ipaddress.IPv4Network, ipaddress.IPv6Network),
+                ):
+                    continue
+                if as_network.subnet_of(tentative_net):
+                    return str("")
+
         if as_network in (
             ipaddress.ip_network("192.0.2.0/25"),
             ipaddress.ip_network("192.0.2.128/25"),
