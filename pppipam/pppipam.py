@@ -47,9 +47,17 @@ class AddressSpace:
     def description(self, ip_parameter):
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
+
         as_address = helpers.clean_address(ip_parameter)
         as_network = helpers.clean_network(ip_parameter)
-        if not as_address and not as_network:
+
+        if not isinstance(
+            as_address,
+            (ipaddress.IPv4Address, ipaddress.IPv6Address),
+        ) and not isinstance(
+            as_network,
+            (ipaddress.IPv4Network, ipaddress.IPv6Network),
+        ):
             raise TypeError("ip_parameter must be a valid IP parameter")
 
         if as_address in self.__description:
