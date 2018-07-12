@@ -3,6 +3,8 @@
 
 """PPPIPAM main module."""
 
+import ipaddress
+
 import pppipam.helpers as helpers
 
 
@@ -25,10 +27,16 @@ class AddressSpace:
 
         described = False
 
-        if as_address:
+        if isinstance(
+            as_address,
+            (ipaddress.IPv4Address, ipaddress.IPv6Address),
+        ):
             self.__description[as_address] = description
             described = True
-        elif as_network:
+        elif isinstance(
+            as_network,
+            (ipaddress.IPv4Network, ipaddress.IPv6Network),
+        ):
             self.__description[as_network] = description
             described = True
         else:
