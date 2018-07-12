@@ -236,3 +236,36 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     ),
                     None,
                 )
+
+    def test_valid_networks_not_as_any_subnet_should_return_none(self):
+        """description should return None if a valid network is
+           not described and not subnet of any network."""
+        for existing_net in (
+            ipaddress.IPv4Network("192.0.2.0/24"),
+            ipaddress.ip_network("203.0.113.0/25"),
+            "10.0.0.0/16",
+            "fe80::/64",
+            ipaddress.ip_network("2001:db8::/48"),
+            ipaddress.IPv6Network("0:abcd::/32"),
+        ):
+            self.address_space.describe(
+                description="dull description",
+                ip_parameter=existing_net,
+            )
+
+        for outside_network in (
+            "192.0.3.128/25",
+            ipaddress.ip_network("203.0.113.128/26"),
+            ipaddress.IPv4Network("10.128.0.0/9"),
+            "0.0.0.0/0",
+            ipaddress.ip_network("fe80:123::/32"),
+            ipaddress.IPv6Network("2001:db8:abcd::/48"),
+            "::/0",
+        ):
+            with self.subTest(outside_network=outside_network):
+                self.assertIs(
+                    self.address_space.description(
+                        outside_network,
+                    ),
+                    None,
+                )
