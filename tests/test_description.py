@@ -186,6 +186,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         for data in (
             ("192.0.2.0/24", "a ipv4 test net", "192.0.2.128"),
             ("192.0.2.0/24", "same net, new address", "192.0.2.192"),
+            ("10.0.0.0/8", "a large private net", "10.123.45.67"),
         ):
             with self.subTest(data=data):
                 self.address_space.describe(
