@@ -82,5 +82,8 @@ class AddressSpace:
             ipaddress.ip_network("192.0.2.0/25"),
             ipaddress.ip_network("192.0.2.128/25"),
             ipaddress.ip_network("10.123.0.0/16"),
+            ipaddress.ip_network("fe80::/126"),
+            ipaddress.ip_network("2001:db8:abcd:123::/64"),
+            ipaddress.ip_network("abcd:123::/32"),
         ):
             return str("")
