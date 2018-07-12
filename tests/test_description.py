@@ -144,6 +144,20 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             "Empty arguments should not be accepted in description",
         )
 
+    def test_description_ip_parameter_not_valid_typeerror(self):
+        """Invalid IP parameter should raise TypeError."""
+        invalid_ip_parameter = False
+        try:
+            self.address_space.description(
+                ip_parameter=None,
+            )
+        except TypeError:
+            invalid_ip_parameter = True
+        self.assertTrue(
+            invalid_ip_parameter,
+            "Invalid IP parameter should raise TypeError",
+        )
+
     def test_describe_then_description(self):
         """describe then description of IP object should return same str."""
         network = "203.0.113.128/25"
