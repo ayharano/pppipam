@@ -23,5 +23,5 @@ class AddressSpace:
 
         return True
 
-    def description(self):
+    def description(self, ip_parameter):
         pass
