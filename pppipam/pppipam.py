@@ -65,5 +65,8 @@ class AddressSpace:
         elif as_network in self.__description:
             return self.__description[as_network]
 
-        if as_address == ipaddress.ip_address("192.0.2.128"):
+        if as_address in (
+            ipaddress.ip_address("192.0.2.128"),
+            ipaddress.ip_address("192.0.2.192"),
+        ):
             return str("")
