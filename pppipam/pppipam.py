@@ -65,6 +65,19 @@ class AddressSpace:
         elif as_network in self.__description:
             return self.__description[as_network]
 
+        if isinstance(
+            as_address,
+            (ipaddress.IPv4Address, ipaddress.IPv6Address),
+        ):
+            for tentative_net in self.__description:
+                if not isinstance(
+                    tentative_net,
+                    (ipaddress.IPv4Network, ipaddress.IPv6Network),
+                ):
+                    continue
+                if as_address in tentative_net:
+                    return str("")
+
         if as_address in (
             ipaddress.ip_address("192.0.2.128"),
             ipaddress.ip_address("192.0.2.192"),
