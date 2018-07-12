@@ -178,3 +178,22 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     ),
                     describe_pair[1],
                 )
+
+    def test_describe_network_then_emptry_address_description(self):
+        """describe an IP network and retrieve empty str description of
+           an address if it is in network range and
+           not explicitly described."""
+        for data in (
+            ("192.0.2.0/24", "a ipv4 test net", "192.0.2.128"),
+        ):
+            with self.subTest(data=data):
+                self.address_space.describe(
+                    ip_parameter=data[0],
+                    description=data[1],
+                )
+                self.assertEqual(
+                    self.address_space.description(
+                        data[2],
+                    ),
+                    str(""),
+                )
