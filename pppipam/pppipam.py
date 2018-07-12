@@ -34,6 +34,7 @@ class AddressSpace:
     __addresses: typing.Dict[int, typing.Set[IPAddress]] = field(
         default_factory=dict
     )
+    strict: bool
 
     def describe(self, *, ip_parameter: IPParameter, description: str) -> bool:
         """Insert an IP address or network with a description.
