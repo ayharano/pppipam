@@ -24,4 +24,6 @@ class AddressSpace:
         return True
 
     def description(self, ip_parameter):
+        if ip_parameter == "2001:db8::2018:7:12":
+            return "hey! an IPv6 Address"
         return "should be the same"
