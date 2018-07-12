@@ -178,39 +178,3 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     ),
                     describe_pair[1],
                 )
-        network = "203.0.113.128/25"
-        description_str = "should be the same"
-        self.address_space.describe(
-            description=description_str,
-            ip_parameter=network,
-        )
-        self.assertEqual(
-            self.address_space.description(
-                network,
-            ),
-            description_str,
-        )
-        ipv6_address = "2001:db8::2018:7:12"
-        description_str = "hey! an IPv6 Address"
-        self.address_space.describe(
-            ip_parameter=ipv6_address,
-            description=description_str,
-        )
-        self.assertEqual(
-            self.address_space.description(
-                ipv6_address,
-            ),
-            description_str,
-        )
-        zero_ipv4 = "0.0.0.0"
-        description_str = "address 0 for ipv4"
-        self.address_space.describe(
-            description=description_str,
-            ip_parameter=zero_ipv4,
-        )
-        self.assertEqual(
-            self.address_space.description(
-                zero_ipv4,
-            ),
-            description_str,
-        )
