@@ -16,8 +16,8 @@ class AddressSpace:
 
     def __init__(self):
         self.__description = dict()
-        self.__networks = set()
-        self.__addresses = set()
+        self.__networks = dict()
+        self.__addresses = dict()
 
     def describe(self, *, ip_parameter, description):
 
@@ -34,11 +34,17 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
-            self.__addresses.add(as_address)
+            version_set = (
+                self.__addresses.setdefault(as_address.version, set())
+            )
+            version_set.add(as_address)
             self.__description[as_address] = description
             described = True
         elif isinstance(as_network, IPNetworkTuple):
-            self.__networks.add(as_network)
+            version_set = (
+                self.__networks.setdefault(as_network.version, set())
+            )
+            version_set.add(as_network)
             self.__description[as_network] = description
             described = True
         else:
@@ -63,12 +69,13 @@ class AddressSpace:
             return self.__description[as_network]
 
         if isinstance(as_address, IPAddressTuple):
-            for tentative_net in self.__networks:
-                if as_address in tentative_net:
-                    return str("")
+            if as_address.version in self.__networks:
+                for tentative_net in self.__networks[as_address.version]:
+                    if as_address in tentative_net:
+                        return str("")
 
         if isinstance(as_network, IPNetworkTuple):
-            for tentative_net in self.__networks:
-                if (as_network.version == tentative_net.version
-                        and as_network.subnet_of(tentative_net)):
-                    return str("")
+            if as_network.version in self.__networks:
+                for tentative_net in self.__networks[as_network.version]:
+                    if as_network.subnet_of(tentative_net):
+                        return str("")
