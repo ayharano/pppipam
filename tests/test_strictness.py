@@ -34,3 +34,12 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
             cannot_be_assigned,
             "AddressSpace instance' strict cannot be assigned",
         )
+
+    def test_address_space_default_strict_should_be_true(self):
+        """Default value for AddressSpace's strict member should be True."""
+        address_space = AddressSpace()
+        self.assertIs(
+            address_space.strict,
+            True,
+            "AddressSpace's default strict value expected to be True.",
+        )
