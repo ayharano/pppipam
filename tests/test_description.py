@@ -64,6 +64,24 @@ class AddressSpace_description_TestCase(unittest.TestCase):
 
     def test_describe_network(self):
         """Add valid IP network with non-empty str description."""
+        for parameters in (
+                ("10.0.0.0/16", "a private IPv4 network"),
+                ("203.0.113.128/25", "part of a test net"),
+                ("0.0.0.0/0", "whole IPv4 address space as network"),
+                ("2001:db8:1234:5678::/64", "a documentation IPv6 network"),
+                ("fe80::/64", "IPv6 link-local network"),
+                ("fd01:2345:6789::/48",
+                 "a ~random~ IPv6 unique-local network"),
+                ("::/0", "whole IPv6 address space as network"),
+        ):
+            with self.subTest(parameters=parameters):
+                self.assertIs(
+                    self.address_space.describe(
+                        description=parameters[1],
+                        ip_parameter=parameters[0],
+                    ),
+                    True,
+                )
         self.assertIs(
             self.address_space.describe(
                 ip_parameter="10.0.0.0/16",
