@@ -77,13 +77,3 @@ class AddressSpace:
                     continue
                 if as_address in tentative_net:
                     return str("")
-
-        if as_address in (
-            ipaddress.ip_address("192.0.2.128"),
-            ipaddress.ip_address("192.0.2.192"),
-            ipaddress.ip_address("10.123.45.67"),
-            ipaddress.ip_address("fe80::ab:cdef"),
-            ipaddress.ip_address("2001:db8:abcd::123"),
-            ipaddress.ip_address("abcd:123::abc"),
-        ):
-            return str("")
