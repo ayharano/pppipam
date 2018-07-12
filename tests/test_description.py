@@ -97,6 +97,18 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             invalid_ip_parameter,
             "Invalid IP parameter should raise TypeError"
         )
+        invalid_ip_parameter = False
+        try:
+            self.address_space.describe(
+                description="parameter as non-zero int",
+                ip_parameter=123,
+            )
+        except TypeError:
+            invalid_ip_parameter = True
+        self.assertTrue(
+            invalid_ip_parameter,
+            "Invalid IP parameter should raise TypeError"
+        )
 
     def test_describe_description_not_str_typeerror(self):
         """Non-str description should raise TypeError."""
