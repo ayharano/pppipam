@@ -19,8 +19,8 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         """Validate if address_space is instance of AddressSpace."""
         self.assertIsInstance(self.address_space, AddressSpace)
 
-    def test_describe_keyword_only_no_empty_arguments(self):
-        """describe method as keyword only, without default parameters."""
+    def test_describe_no_empty_arguments(self):
+        """describe method with no empty argument list."""
         no_empty_arguments = False
         try:
             self.address_space.describe()
@@ -132,8 +132,8 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             "Empty str description should raise ValueError",
         )
 
-    def test_description(self):
-        """description method as without default parameters."""
+    def test_description_no_empty_arguments(self):
+        """description method with no empty argument list."""
         no_empty_arguments = False
         try:
             self.address_space.description()
