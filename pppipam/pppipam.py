@@ -23,14 +23,18 @@ class AddressSpace:
         as_address = helpers.clean_address(ip_parameter)
         as_network = helpers.clean_network(ip_parameter)
 
+        described = False
+
         if as_address:
             self.__description[as_address] = description
+            described = True
         elif as_network:
             self.__description[as_network] = description
+            described = True
         else:
             raise TypeError("ip_parameter must be a valid IP parameter")
 
-        return True
+        return described
 
     def description(self, ip_parameter):
         if isinstance(ip_parameter, int):
