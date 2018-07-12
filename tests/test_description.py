@@ -143,3 +143,17 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             no_empty_arguments,
             "Empty arguments should not be accepted in describe",
         )
+
+    def test_describe_then_description(self):
+        """describe then description of IP object should return same str."""
+        description_str = "should be the same"
+        self.address_space.describe(
+            description=description_str,
+            ip_parameter="203.0.113.128/25",
+        )
+        self.assertEqual(
+            self.address_space.description(
+                description_str,
+            ),
+            description_str,
+        )
