@@ -3,6 +3,7 @@
 
 """Tests for description methods of pppipam.AddressSpace instances."""
 
+import ipaddress
 import unittest
 
 from pppipam.pppipam import AddressSpace
@@ -201,4 +202,37 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                         data[2],
                     ),
                     str(""),
+                )
+
+    def test_valid_address_not_in_any_net_should_return_none(self):
+        """description should return None if a valid address is
+           not described and not in any network."""
+        for existing_net in (
+            ipaddress.IPv4Network("192.0.2.0/24"),
+            ipaddress.ip_network("203.0.113.0/25"),
+            "10.0.0.0/16",
+            "fe80::/64",
+            ipaddress.ip_network("2001:db8::/48"),
+            ipaddress.IPv6Network("0:abcd::/32"),
+        ):
+            self.address_space.describe(
+                description="dull description",
+                ip_parameter=existing_net,
+            )
+
+        for outside_address in (
+            "192.0.3.128",
+            ipaddress.ip_address("203.0.113.128"),
+            ipaddress.IPv4Address("10.128.0.0"),
+            "0.0.0.0",
+            ipaddress.ip_address("fe80:123::abcd"),
+            ipaddress.IPv6Address("2001:db8:abcd::"),
+            "::",
+        ):
+            with self.subTest(outside_address=outside_address):
+                self.assertIs(
+                    self.address_space.description(
+                        outside_address,
+                    ),
+                    None,
                 )
