@@ -21,3 +21,16 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
             "AddressSpace instance expected to have "
             "a strict boolean member"
         )
+
+    def test_address_space_strict_cannot_be_assigned_to(self):
+        """AddressSpace's strict member cannot be assigned."""
+        address_space = AddressSpace()
+        cannot_be_assigned = False
+        try:
+            address_space.strict = False
+        except AttibuteError:
+            cannot_be_assigned = True
+        self.assertTrue(
+            cannot_be_assigned,
+            "AddressSpace instance' strict cannot be assigned",
+        )
