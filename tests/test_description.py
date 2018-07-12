@@ -210,6 +210,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
            not explicitly described."""
         for data in (
             ("192.0.2.0/24", "a ipv4 test net", "192.0.2.0/25"),
+            ("192.0.2.0/24", "same net, new subnet", "192.0.2.128/25"),
         ):
             with self.subTest(data=data):
                 self.address_space.describe(
