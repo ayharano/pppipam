@@ -131,3 +131,15 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             empty_str_description,
             "Empty str description should raise ValueError",
         )
+
+    def test_description(self):
+        """description method as without default parameters."""
+        no_empty_arguments = False
+        try:
+            self.address_space.description()
+        except TypeError:
+            no_empty_arguments = True
+        self.assertTrue(
+            no_empty_arguments,
+            "Empty arguments should not be accepted in describe",
+        )
