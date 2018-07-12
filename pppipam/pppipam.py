@@ -12,22 +12,23 @@ class AddressSpace:
         self.__description = dict()
 
     def describe(self, *, ip_parameter, description):
-        if isinstance(ip_parameter, int):
-            raise TypeError("ip_parameter must not be int")
-        as_address = helpers.clean_address(ip_parameter)
-        as_network = helpers.clean_network(ip_parameter)
-        if not as_address and not as_network:
-            raise TypeError("ip_parameter must be a valid IP parameter")
 
         if description == "":
             raise ValueError("No empty description allowed")
         if not isinstance(description, str):
             raise TypeError("description must be str")
+        if isinstance(ip_parameter, int):
+            raise TypeError("ip_parameter must not be int")
+
+        as_address = helpers.clean_address(ip_parameter)
+        as_network = helpers.clean_network(ip_parameter)
 
         if as_address:
             self.__description[as_address] = description
         elif as_network:
             self.__description[as_network] = description
+        else:
+            raise TypeError("ip_parameter must be a valid IP parameter")
 
         return True
 
