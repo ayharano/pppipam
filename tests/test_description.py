@@ -47,18 +47,17 @@ class AddressSpace_description_TestCase(unittest.TestCase):
     def test_describe_address(self):
         """Add valid IP address with non-empty str description."""
         for parameters in (
-            ('123.123.123.123', "123 is nice"),
-            ('203.0.113.129', "Second subnet gateway"),
-            ('192.0.2.123', "123 is nice, test net"),
-            ('2001:db8::abcd:ef12', "ipv6 doc address"),
-            ('2000::', "first global address for now"),
-            ('fe80::', "even link-local?"),
+            ("123.123.123.123", "123 is nice"),
+            ("203.0.113.129", "Second subnet gateway"),
+            ("192.0.2.123", "123 is nice, test net"),
+            ("2001:db8::abcd:ef12", "ipv6 doc address"),
+            ("2000::", "first global address for now"),
+            ("fe80::", "even link-local?"),
         ):
             with self.subTest(parameters=parameters):
                 self.assertIs(
                     self.address_space.describe(
-                        ip_parameter=parameters[0],
-                        description=parameters[1],
+                        ip_parameter=parameters[0], description=parameters[1]
                     ),
                     True,
                 )
@@ -66,20 +65,18 @@ class AddressSpace_description_TestCase(unittest.TestCase):
     def test_describe_network(self):
         """Add valid IP network with non-empty str description."""
         for parameters in (
-                ("10.0.0.0/16", "a private IPv4 network"),
-                ("203.0.113.128/25", "part of a test net"),
-                ("0.0.0.0/0", "whole IPv4 address space as network"),
-                ("2001:db8:1234:5678::/64", "a documentation IPv6 network"),
-                ("fe80::/64", "IPv6 link-local network"),
-                ("fd01:2345:6789::/48",
-                 "a ~random~ IPv6 unique-local network"),
-                ("::/0", "whole IPv6 address space as network"),
+            ("10.0.0.0/16", "a private IPv4 network"),
+            ("203.0.113.128/25", "part of a test net"),
+            ("0.0.0.0/0", "whole IPv4 address space as network"),
+            ("2001:db8:1234:5678::/64", "a documentation IPv6 network"),
+            ("fe80::/64", "IPv6 link-local network"),
+            ("fd01:2345:6789::/48", "a ~random~ IPv6 unique-local network"),
+            ("::/0", "whole IPv6 address space as network"),
         ):
             with self.subTest(parameters=parameters):
                 self.assertIs(
                     self.address_space.describe(
-                        description=parameters[1],
-                        ip_parameter=parameters[0],
+                        description=parameters[1], ip_parameter=parameters[0]
                     ),
                     True,
                 )
@@ -108,8 +105,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                 non_str_description = False
                 try:
                     self.address_space.describe(
-                        ip_parameter='123.123.123.123',
-                        description=non_str,
+                        ip_parameter="123.123.123.123", description=non_str
                     )
                 except TypeError:
                     non_str_description = True
@@ -123,8 +119,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         empty_str_description = False
         try:
             self.address_space.describe(
-                ip_parameter='123.123.123.123',
-                description="",
+                ip_parameter="123.123.123.123", description=""
             )
         except ValueError:
             empty_str_description = True
@@ -151,9 +146,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             with self.subTest(invalid_=invalid_):
                 invalid_ip_parameter = False
                 try:
-                    self.address_space.description(
-                        ip_parameter=invalid_,
-                    )
+                    self.address_space.description(ip_parameter=invalid_)
                 except TypeError:
                     invalid_ip_parameter = True
                 self.assertTrue(
@@ -170,13 +163,10 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         ):
             with self.subTest(describe_pair=describe_pair):
                 self.address_space.describe(
-                    description=describe_pair[1],
-                    ip_parameter=describe_pair[0],
+                    description=describe_pair[1], ip_parameter=describe_pair[0]
                 )
                 self.assertEqual(
-                    self.address_space.description(
-                        describe_pair[0],
-                    ),
+                    self.address_space.description(describe_pair[0]),
                     describe_pair[1],
                 )
 
@@ -194,14 +184,10 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         ):
             with self.subTest(data=data):
                 self.address_space.describe(
-                    ip_parameter=data[0],
-                    description=data[1],
+                    ip_parameter=data[0], description=data[1]
                 )
                 self.assertEqual(
-                    self.address_space.description(
-                        data[2],
-                    ),
-                    str(""),
+                    self.address_space.description(data[2]), str("")
                 )
 
     def test_describe_network_then_empty_subnet_description(self):
@@ -218,14 +204,10 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         ):
             with self.subTest(data=data):
                 self.address_space.describe(
-                    ip_parameter=data[0],
-                    description=data[1],
+                    ip_parameter=data[0], description=data[1]
                 )
                 self.assertEqual(
-                    self.address_space.description(
-                        data[2],
-                    ),
-                    str(""),
+                    self.address_space.description(data[2]), str("")
                 )
 
     def test_valid_address_not_in_any_net_should_return_none(self):
@@ -240,8 +222,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             ipaddress.IPv6Network("0:abcd::/32"),
         ):
             self.address_space.describe(
-                description="dull description",
-                ip_parameter=existing_net,
+                description="dull description", ip_parameter=existing_net
             )
 
         for outside_address in (
@@ -255,10 +236,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         ):
             with self.subTest(outside_address=outside_address):
                 self.assertIs(
-                    self.address_space.description(
-                        outside_address,
-                    ),
-                    None,
+                    self.address_space.description(outside_address), None
                 )
 
     def test_valid_networks_not_as_any_subnet_should_return_none(self):
@@ -273,8 +251,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             ipaddress.IPv6Network("0:abcd::/32"),
         ):
             self.address_space.describe(
-                description="dull description",
-                ip_parameter=existing_net,
+                description="dull description", ip_parameter=existing_net
             )
 
         for outside_network in (
@@ -288,8 +265,5 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         ):
             with self.subTest(outside_network=outside_network):
                 self.assertIs(
-                    self.address_space.description(
-                        outside_network,
-                    ),
-                    None,
+                    self.address_space.description(outside_network), None
                 )

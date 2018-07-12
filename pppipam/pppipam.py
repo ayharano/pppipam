@@ -82,16 +82,14 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
-            version_set = (
-                self.__addresses.setdefault(as_address.version, set())
+            version_set = self.__addresses.setdefault(
+                as_address.version, set()
             )
             version_set.add(as_address)
             self.__description[as_address] = description
             described = True
         elif isinstance(as_network, IPNetworkTuple):
-            version_set = (
-                self.__networks.setdefault(as_network.version, set())
-            )
+            version_set = self.__networks.setdefault(as_network.version, set())
             version_set.add(as_network)
             self.__description[as_network] = description
             described = True
@@ -172,8 +170,9 @@ class AddressSpace:
         as_address = helpers.clean_address(ip_parameter)
         as_network = helpers.clean_network(ip_parameter)
 
-        if (not isinstance(as_address, IPAddressTuple)
-                and not isinstance(as_network, IPNetworkTuple)):
+        if not isinstance(as_address, IPAddressTuple) and not isinstance(
+            as_network, IPNetworkTuple
+        ):
             raise TypeError("ip_parameter must be a valid IP parameter")
 
         if as_address in self.__description:
