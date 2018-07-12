@@ -13,13 +13,30 @@ IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
 class AddressSpace:
+    """IP addresses and networks description manager."""
 
     def __init__(self):
+        """Initialize private attributes."""
         self.__description = dict()
         self.__networks = dict()
         self.__addresses = dict()
 
     def describe(self, *, ip_parameter, description):
+        """Insert an IP address or network with a description.
+
+        Args:
+            ip_parameter: value to be processed as an IP address or
+                          an IP network.
+            description: non-empty str to describe IP address or
+                         IP network.
+
+        Returns:
+            bool if successfully described.
+
+        Raises:
+            TypeError: parameters not of expected type.
+            ValueError: invalid description value.
+        """
 
         if description == "":
             raise ValueError("No empty description allowed")
@@ -53,6 +70,22 @@ class AddressSpace:
         return described
 
     def description(self, ip_parameter):
+        """Retrieve a description of an IP address or IP network.
+
+        Args:
+            ip_parameter: value to be processed as an IP address or
+                          an IP network.
+
+        Returns:
+            Non-empty str if matches a described IP object;
+            empty str if matches an address or subnet of
+            a described IP Network; or
+            None if IP object does not belong in address space.
+
+        Raises:
+            TypeError: parameters not of expected type.
+        """
+
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
 
