@@ -30,10 +30,7 @@ class AddressSpace:
         as_network = helpers.clean_network(ip_parameter)
         if not as_address and not as_network:
             raise TypeError("ip_parameter must be a valid IP parameter")
-        if isinstance(ip_parameter, set):
-            raise TypeError("ip_parameter must be a valid IP parameter")
-        if not ip_parameter:
-            raise TypeError("ip_parameter must be a valid IP parameter")
+
         if ip_parameter == "0.0.0.0":
             return "address 0 for ipv4"
         if ip_parameter == "2001:db8::2018:7:12":
