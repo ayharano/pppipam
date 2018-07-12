@@ -82,56 +82,6 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     ),
                     True,
                 )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="10.0.0.0/16",
-                description="a private IPv4 network",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="203.0.113.128/25",
-                description="part of a test net",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="0.0.0.0/0",
-                description="whole IPv4 address space as network",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="2001:db8:1234:5678::/64",
-                description="a documentation IPv6 network",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="fe80::/64",
-                description="IPv6 link-local network",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="fd01:2345:6789::/48",
-                description="a ~random~ IPv6 unique-local network",
-            ),
-            True,
-        )
-        self.assertIs(
-            self.address_space.describe(
-                ip_parameter="::/0",
-                description="whole IPv6 address space as network",
-            ),
-            True,
-        )
-
 
     def test_describe_description_not_str_typeerror(self):
         """Non-str description should raise TypeError."""
