@@ -146,7 +146,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
 
     def test_description_ip_parameter_not_valid_typeerror(self):
         """Invalid IP parameter should raise TypeError."""
-        for invalid_ in (None, 123):
+        for invalid_ in (None, 123, set([2, 3, 1])):
             with self.subTest(invalid_=invalid_):
                 invalid_ip_parameter = False
                 try:
