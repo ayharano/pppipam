@@ -81,5 +81,6 @@ class AddressSpace:
         if as_network in (
             ipaddress.ip_network("192.0.2.0/25"),
             ipaddress.ip_network("192.0.2.128/25"),
+            ipaddress.ip_network("10.123.45.0/16"),
         ):
             return str("")
