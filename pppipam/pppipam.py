@@ -27,7 +27,7 @@ IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 class AddressSpace:
     """IP addresses and networks description manager."""
 
-    strict: bool = False
+    __strict: bool = False
     __description: typing.Dict[IPObject, str] = field(default_factory=dict)
     __networks: typing.Dict[int, typing.Set[IPNetwork]] = field(
         default_factory=dict
@@ -35,6 +35,11 @@ class AddressSpace:
     __addresses: typing.Dict[int, typing.Set[IPAddress]] = field(
         default_factory=dict
     )
+
+    @property
+    def strict(self) -> bool:
+        """Returns strict value."""
+        return bool(self.__strict)
 
     def describe(self, *, ip_parameter: IPParameter, description: str) -> bool:
         """Insert an IP address or network with a description.
