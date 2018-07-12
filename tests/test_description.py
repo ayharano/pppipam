@@ -204,6 +204,25 @@ class AddressSpace_description_TestCase(unittest.TestCase):
                     str(""),
                 )
 
+    def test_describe_network_then_empty_subnet_description(self):
+        """describe an IP network and retrieve empty str description of
+           an subnet if it is in network range and
+           not explicitly described."""
+        for data in (
+            ("192.0.2.0/24", "a ipv4 test net", "192.0.2.0/25"),
+        ):
+            with self.subTest(data=data):
+                self.address_space.describe(
+                    ip_parameter=data[0],
+                    description=data[1],
+                )
+                self.assertEqual(
+                    self.address_space.description(
+                        data[2],
+                    ),
+                    str(""),
+                )
+
     def test_valid_address_not_in_any_net_should_return_none(self):
         """description should return None if a valid address is
            not described and not in any network."""
