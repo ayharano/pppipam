@@ -3,33 +3,39 @@
 
 """PPPIPAM main module."""
 
-import dataclasses
+from dataclasses import dataclass, field
 import ipaddress
 import typing
 
-import pppipam.helpers as helpers
+from pppipam.helpers import (
+    IPAddressParameter,
+    IPNetworkParameter,
+    IPAddress,
+    IPNetwork,
+    clean_address,
+    clean_network,
+)
 
 
-IPParameter = typing.Union[
-    helpers.IPAddressParameter, helpers.IPNetworkParameter
-]
+IPParameter = typing.Union[IPAddressParameter, IPNetworkParameter]
+IPObject = typing.Union[IPAddress, IPNetwork]
 IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
-@dataclasses.dataclass
+@dataclass
 class AddressSpace:
     """IP addresses and networks description manager."""
 
-    def __init__(self) -> None:
-        """Initialize private attributes."""
-        self.__description = dict()
-        self.__networks = dict()
-        self.__addresses = dict()
+    __description: typing.Dict[IPObject, str] = field(default_factory=dict)
+    __networks: typing.Dict[int, typing.Set[IPNetwork]] = field(
+        default_factory=dict
+    )
+    __addresses: typing.Dict[int, typing.Set[IPAddress]] = field(
+        default_factory=dict
+    )
 
-    def describe(
-        self, *, ip_parameter: IPParameter, description: str
-    ) -> bool:
+    def describe(self, *, ip_parameter: IPParameter, description: str) -> bool:
         """Insert an IP address or network with a description.
 
         Args:
@@ -84,8 +90,8 @@ class AddressSpace:
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
 
-        as_address = helpers.clean_address(ip_parameter)
-        as_network = helpers.clean_network(ip_parameter)
+        as_address = clean_address(ip_parameter)
+        as_network = clean_network(ip_parameter)
 
         described = False
 
@@ -175,8 +181,8 @@ class AddressSpace:
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
 
-        as_address = helpers.clean_address(ip_parameter)
-        as_network = helpers.clean_network(ip_parameter)
+        as_address = clean_address(ip_parameter)
+        as_network = clean_network(ip_parameter)
 
         if not isinstance(as_address, IPAddressTuple) and not isinstance(
             as_network, IPNetworkTuple
