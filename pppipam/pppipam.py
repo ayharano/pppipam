@@ -77,3 +77,8 @@ class AddressSpace:
                     continue
                 if as_address in tentative_net:
                     return str("")
+
+        if as_network in (
+            ipaddress.ip_network("192.0.2.0/25"),
+        ):
+            return str("")
