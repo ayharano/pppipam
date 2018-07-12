@@ -22,3 +22,5 @@ class AddressSpace:
             raise TypeError("description must be str")
 
         return True
+
+    description = None
