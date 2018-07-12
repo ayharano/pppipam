@@ -212,6 +212,9 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             ("192.0.2.0/24", "a ipv4 test net", "192.0.2.0/25"),
             ("192.0.2.0/24", "same net, new subnet", "192.0.2.128/25"),
             ("10.0.0.0/8", "a large private net", "10.123.0.0/16"),
+            ("fe80::/64", "link-local net", "fe80::/126"),
+            ("2001:db8:abcd::/48", "ipv6 doc net", "2001:db8:abcd:123::/64"),
+            ("abcd::/16", "currently outside global ipv6", "abcd:123::/32"),
         ):
             with self.subTest(data=data):
                 self.address_space.describe(
