@@ -190,7 +190,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
         description_str = "address 0 for ipv4"
         self.address_space.describe(
             description=description_str,
-            ip_parameter=network,
+            ip_parameter=zero_ipv4,
         )
         self.assertEqual(
             self.address_space.description(
