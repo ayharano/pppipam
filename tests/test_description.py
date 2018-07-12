@@ -141,7 +141,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
             no_empty_arguments = True
         self.assertTrue(
             no_empty_arguments,
-            "Empty arguments should not be accepted in describe",
+            "Empty arguments should not be accepted in description",
         )
 
     def test_describe_then_description(self):
