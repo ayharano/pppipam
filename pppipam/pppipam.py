@@ -163,12 +163,12 @@ class AddressSpace:
             ...              ip_parameter="10.98.76.54")
             Traceback (most recent call last):
                 ...
-            pppipam.pppipam.StrictSupernetError
+            pppipam.pppipam.StrictSupernetError: supernet not found
             >>> sas.describe(description="network without supernet",
             ...              ip_parameter="2001:db8:abcd::/48")
             Traceback (most recent call last):
                 ...
-            pppipam.pppipam.StrictSupernetError
+            pppipam.pppipam.StrictSupernetError: supernet not found
             >>> sas.describe_new_delegated_network(
             ...     network_parameter="2000::/3",
             ...     description="current global IPv6 network")
@@ -302,6 +302,14 @@ class AddressSpace:
             ...              description="a private new")
             True
             >>> as_.describe_new_delegated_network(
+            ...     description="describing a network without supernet "
+            ...                 "is the same as inserting a delegated net "
+            ...                 "even if strict is False",
+            ...     network_parameter="10.10.0.0/16")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.SameDelegationAsNewError: already described
+            >>> as_.describe_new_delegated_network(
             ...     network_parameter="10.0.0.0/8",
             ...     description="supernet is fine")
             True
@@ -310,18 +318,18 @@ class AddressSpace:
             ...     description="no subnet, even in non strict")
             Traceback (most recent call last):
                 ...
-            pppipam.pppipam.StrictSupernetError
+            pppipam.pppipam.StrictSupernetError: supernet already described
             >>> sas = AddressSpace(strict_=True)
             >>> sas.describe(ip_parameter="2001:db8::/48",
-            ...              description="must delegate new first in strict")
+            ...              description="must delegate first in strict")
             Traceback (most recent call last):
                 ...
-            pppipam.pppipam.StrictSupernetError
+            pppipam.pppipam.StrictSupernetError: supernet not found
             >>> sas.describe(ip_parameter="2001:db8::",
             ...              description="of course for address too")
             Traceback (most recent call last):
                 ...
-            pppipam.pppipam.StrictSupernetError
+            pppipam.pppipam.StrictSupernetError: supernet not found
             >>> sas.describe_new_delegated_network(
             ...     network_parameter="2001:db8:abcd::",
             ...     description="but not an address")
@@ -336,6 +344,13 @@ class AddressSpace:
             ...     network_parameter="127.127.0.0/16",
             ...     description="and ipv4 also")
             True
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="2001:db8:abcd::/48",
+            ...     description="but not more than once")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.SameDelegationAsNewError: already described
+            >>>
         """
 
         if isinstance(network_parameter, int):
