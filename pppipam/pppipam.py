@@ -376,13 +376,13 @@ class AddressSpace:
             >>> sas = AddressSpace(strict_=True)
             >>> sas.describe_new_delegated_network(
             ...     description='An IPv6 documentation network',
-            ...     ip_parameter='2001:db8:abcd::/48')
+            ...     network_parameter='2001:db8:abcd::/48')
             True
             >>> sas.describe(description='An IPv6 address in doc net',
             ...              ip_parameter='2001:db8:abcd::1234')
             True
             >>> sas.describe_new_delegated_network(
-            ...     ip_parameter='198.51.100.0/24',
+            ...     network_parameter='198.51.100.0/24',
             ...     description="TEST-NET-2 (RFC5735)")
             True
             >>> sas.describe(description="An address in test net",
