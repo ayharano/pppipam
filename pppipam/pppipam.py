@@ -121,15 +121,6 @@ class AddressSpace:
         if isinstance(as_address, IPAddressTuple):
             if self.__strict and self.__get_supernet(as_address) is None:
                 raise StrictSupernetError()
-            if self.__strict and as_address in (
-                ipaddress.ip_address("203.0.113.128"),
-                ipaddress.ip_address("2000::"),
-                ipaddress.ip_address("192.0.2.192"),
-                ipaddress.ip_address("fe80::abcd"),
-                ipaddress.ip_address("10.123.45.67"),
-                ipaddress.ip_address("2001:db8:abcd::1234"),
-            ):
-                raise StrictSupernetError()
             version_set = self.__addresses.setdefault(
                 as_address.version, set()
             )
