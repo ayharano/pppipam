@@ -55,3 +55,20 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
             no_positional_arguments,
             "No positional argument should be accepted in __init__",
         )
+
+    def test_address_space_cannot_describe_address_if_no_previous_net(self):
+        """An address can only be described if a supernet exists."""
+        address_space = AddressSpace(strict=True)
+        no_previous_supernet = False
+        try:
+            address_space.describe(
+                ip_parameter="203.0.113.128",
+                description="a IPv4 test net address",
+            )
+        except StrictSupernetError:
+            no_previous_supernet = True
+        self.assertTrue(
+            no_previous_supernet,
+            "If strict address space, can describe address only "
+            "if supernet already exists",
+        )
