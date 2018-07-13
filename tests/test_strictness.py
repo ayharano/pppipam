@@ -60,7 +60,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
 
     def test_address_space_cannot_describe_address_if_no_previous_net(self):
         """An address can only be described if a supernet exists."""
-        address_space = AddressSpace(strict=True)
+        address_space = AddressSpace(strict_=True)
         for data in (
             ("203.0.113.128", "a IPv4 test net address"),
             ("2000::", "A 6 characts short IPv6 address"),
@@ -88,7 +88,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         """New delegated network method with no empty argument list."""
         for strict in (False, True):
             with self.subTest(strict=strict):
-                address_space = AddressSpace(strict=strict)
+                address_space = AddressSpace(strict_=strict)
                 no_empty_arguments = False
                 try:
                     address_space.describe_new_delegated_network()
@@ -104,7 +104,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         """New delegated network must use keyword-only args."""
         for strict in (False, True):
             with self.subTest(strict=strict):
-                address_space = AddressSpace(strict=strict)
+                address_space = AddressSpace(strict_=strict)
                 no_positional_arguments = False
                 try:
                     address_space.describe_new_delegated_network(
@@ -121,8 +121,8 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
     def test_delegated_network_into_address_space(self):
         """Inserts a network without supernet present in address space."""
         for strict in (False, True):
-            with self.subTest(strict=strict):
-                address_space = AddressSpace(strict=strict)
+            with self.subTest(strict_=strict):
+                address_space = AddressSpace(strict_=strict)
                 for data in (
                     ("2001:db8::/32", "IPv6 documentation network space"),
                     ("203.0.113.0/24", "one of IPv4 test net"),
@@ -145,7 +145,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         """Inserting delegation with present supernet must raise exception."""
         for strict in (False, True):
             with self.subTest(strict=strict):
-                address_space = AddressSpace(strict=strict)
+                address_space = AddressSpace(strict_=strict)
                 for data in (
                     ("2001:db8::/32", "2001:db8::/48"),
                     ("203.0.113.0/24", "203.0.113.0/27"),
@@ -190,7 +190,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
             with self.subTest(net=net):
                 for strict in (False, True):
                     with self.subTest(strict=strict):
-                        address_space = AddressSpace(strict=strict)
+                        address_space = AddressSpace(strict_=strict)
                         self.assertTrue(
                             address_space.describe_new_delegated_network(
                                 network_parameter=net,

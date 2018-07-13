@@ -93,7 +93,7 @@ class AddressSpace:
             ValueError: invalid description value.
 
         doctest example:
-            >>> as_ = AddressSpace(strict=False)
+            >>> as_ = AddressSpace(strict_=False)
             >>> as_.describe(description='Famous IPv4 loopback address',
             ...              ip_parameter='127.0.0.1')
             True
@@ -194,7 +194,7 @@ class AddressSpace:
             TypeError: parameters not of expected type.
 
         doctest example:
-            >>> as_ = AddressSpace(strict=False)
+            >>> as_ = AddressSpace(strict_=False)
             >>> as_.describe(
             ...     description='An IPv6 documentation network',
             ...     ip_parameter='2001:db8:abcd::/48')
