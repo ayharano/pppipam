@@ -154,10 +154,10 @@ class AddressSpace_export_TestCase(unittest.TestCase):
                             ),
                         "Address description should be successful",
                     )
-                actual_exported_data = address_space.export_data()
-                self.assertTrue(
-                    actual_exported_data, "should be evaluated as True"
-                )
+                # actual_exported_data = address_space.export_data()
+                # self.assertTrue(
+                #     actual_exported_data, "should be evaluated as True"
+                # )
                 # self.assertEquals(
                 #     exported["description"],
                 #     actual_exported_data["description"],
