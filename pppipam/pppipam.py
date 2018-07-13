@@ -111,7 +111,7 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
-            if as_address in (
+            if self.__strict and as_address in (
                 ipaddress.ip_address("203.0.113.128"),
                 ipaddress.ip_address("2000::"),
             ):
