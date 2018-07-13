@@ -23,6 +23,11 @@ IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
+class StrictSupernetError(Exception):
+    """Attempt to insert object without a previous supernet."""
+    pass
+
+
 @dataclass(init=False)
 class AddressSpace:
     """IP addresses and networks description manager."""
@@ -32,7 +37,6 @@ class AddressSpace:
     __networks: typing.Dict[int, typing.Set[IPNetwork]]
     __addresses: typing.Dict[int, typing.Set[IPAddress]]
     strict: InitVar[bool] = True
-
 
     def __init__(self, *, strict: bool = True) -> None:
         """Handles init-only var into private var."""
