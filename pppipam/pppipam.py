@@ -28,6 +28,11 @@ class StrictSupernetError(Exception):
     pass
 
 
+class SameDelegationAsNewError(Exception):
+    """Attempt to insert already existing delegated network."""
+    pass
+
+
 @dataclass(init=False)
 class AddressSpace:
     """IP addresses and networks description manager."""
