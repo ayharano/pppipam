@@ -45,6 +45,14 @@ class AddressSpace:
         self.__networks = dict()
         self.__addresses = dict()
 
+    def __get_supernet(self, cleared_address):
+        if cleared_address.version not in self.__networks:
+            return None
+
+        for tentative_supernet in self.__networks[cleared_address.version]:
+            if cleared_address in tentative_supernet:
+                return tentative_supernet
+
     @property
     def strict(self) -> bool:
         """Returns strict value."""
@@ -111,6 +119,8 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
+            if self.__strict and self.__get_supernet(as_address) is None:
+                raise StrictSupernetError()
             if self.__strict and as_address in (
                 ipaddress.ip_address("203.0.113.128"),
                 ipaddress.ip_address("2000::"),
