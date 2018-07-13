@@ -139,7 +139,7 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                             "supernet",
                         )
 
-    def test_delegated_network_into_address_space(self):
+    def test_delegated_network_cannot_describe_subnet_as_new(self):
         """Inserting delegation with present supernet must raise exception."""
         for strict in (False, True):
             with self.subTest(strict=strict):
