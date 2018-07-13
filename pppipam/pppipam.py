@@ -164,6 +164,8 @@ class AddressSpace:
             self.__description[as_address] = description
             described = True
         elif isinstance(as_network, IPNetworkTuple):
+            if self.__strict and self.__get_supernet(as_network) is None:
+                raise StrictSupernetError()
             version_set = self.__networks.setdefault(as_network.version, set())
             version_set.add(as_network)
             self.__description[as_network] = description
