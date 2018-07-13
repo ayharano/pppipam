@@ -45,13 +45,24 @@ class AddressSpace:
         self.__networks = dict()
         self.__addresses = dict()
 
-    def __get_supernet(self, cleared_address):
-        if cleared_address.version not in self.__networks:
+    def __get_supernet(self, cleaned_ip_object):
+
+        version = cleaned_ip_object.version
+
+        if version not in self.__networks:
             return None
 
-        for tentative_supernet in self.__networks[cleared_address.version]:
-            if cleared_address in tentative_supernet:
-                return tentative_supernet
+        if isinstance(cleaned_ip_object, IPAddressTuple):
+            for tentative_supernet in self.__networks[version]:
+                if cleaned_ip_object in tentative_supernet:
+                    return tentative_supernet
+
+        if isinstance(cleaned_ip_object, IPNetworkTuple):
+            for tentative_supernet in self.__networks[version]:
+                if cleaned_ip_object == tentative_supernet:
+                    continue
+                if cleaned_ip_object.subnet_of(tentative_supernet):
+                    return tentative_supernet
 
     @property
     def strict(self) -> bool:
