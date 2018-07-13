@@ -507,3 +507,6 @@ class AddressSpace:
                 return str("")
 
         return None
+
+    def export_data(self):
+        pass
