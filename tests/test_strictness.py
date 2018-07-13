@@ -97,3 +97,21 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                     "Empty arguments should not be accepted in "
                     "describe_new_delegated_network",
                 )
+
+    def test_delegated_network_keyword_only_no_positional_args(self):
+        """New delegated network must use keyword-only args."""
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                address_space = AddressSpace(strict=strict)
+                no_positional_arguments = False
+                try:
+                    address_space.describe_new_delegated_network(
+                        "2001:db8::/32", "IPv6 documentation network space"
+                    )
+                except TypeError:
+                    no_positional_arguments = True
+                self.assertTrue(
+                    no_positional_arguments,
+                    "No positional argument should be accepted in "
+                    "describe_new_delegated_network",
+                )
