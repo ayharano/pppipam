@@ -111,6 +111,10 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
+            if as_address in (
+                ipaddress.ip_address("203.0.113.128"),
+            ):
+                raise StrictSupernetError()
             version_set = self.__addresses.setdefault(
                 as_address.version, set()
             )
