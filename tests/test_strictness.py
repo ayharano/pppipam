@@ -177,3 +177,38 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                             "should be present, for strict and non strict "
                             "address spaces"
                         )
+
+    def test_delegated_network_cannot_insert_same_as_new(self):
+        """Inserting delegation with same net must raise exception."""
+        for net in (
+            "2001:db8::/32", "2001:db8::/48", "203.0.113.0/24",
+            "203.0.113.0/27", "fdab:cdef:1234::/48",
+            "fdab:cdef:1234:5678::/64", "192.0.2.0/24",
+            "192.0.2.128/26", "::/0", "::ab00/126",
+            "0.0.0.0/0", "10.0.0.0/8",
+        ):
+            with self.subTest(net=net):
+                for strict in (False, True):
+                    with self.subTest(strict=strict):
+                        address_space = AddressSpace(strict=strict)
+                        self.assertTrue(
+                            address_space.describe_new_delegated_network(
+                                network_parameter=net,
+                                description="actual delegation",
+                            ),
+                            "Describe a network without a previous inserted "
+                            "supernet",
+                        )
+                        same_net = False
+                        try:
+                            address_space.describe_new_delegated_network(
+                                network_parameter=net,
+                                description="trying to insert same as new",
+                            )
+                        except SameDelegationAsNewError:
+                            same_net = True
+                        self.assertTrue(
+                            same_net,
+                            "Cannot insert same delegation as new more than "
+                            "once",
+                        )
