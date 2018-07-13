@@ -12,6 +12,15 @@ from pppipam.pppipam import AddressSpace
 class AddressSpace_export_TestCase(unittest.TestCase):
     """Tests related to AddressSpace's data export."""
 
+    def test_address_space_export_for_default_instance(self):
+        """Default instance should return dict with default values."""
+        default_address_space = AddressSpace()
+        exported_data = default_address_space.export_data()
+        self.assertTrue(
+            exported_data,
+            "exported data should truth evaluate to True"
+        )
+
     def test_address_space_export(self):
         """Export AddressSpace's data."""
         delegated_tuples = (
