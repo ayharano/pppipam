@@ -31,6 +31,18 @@ class AddressSpace_export_TestCase(unittest.TestCase):
             "exported data should be a dict"
         )
 
+    def test_address_space_export_for_default_instance_should_have_keys(self):
+        """Default instance should return dict with keys."""
+        default_address_space = AddressSpace()
+        exported_data = default_address_space.export_data()
+        for key in ("description", "nested_ip_object"):
+            with self.subTest(key=key):
+                self.assertIn(
+                    key,
+                    exported_data,
+                    "exported data should have specific key"
+                )
+
     def test_address_space_export(self):
         """Export AddressSpace's data."""
         delegated_tuples = (
