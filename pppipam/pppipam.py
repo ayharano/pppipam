@@ -34,7 +34,7 @@ class AddressSpace:
     strict: InitVar[bool] = True
 
 
-    def __init__(self, strict: bool = True) -> None:
+    def __init__(self, *, strict: bool = True) -> None:
         """Handles init-only var into private var."""
         self.__strict = bool(strict)
         self.__description = dict()
