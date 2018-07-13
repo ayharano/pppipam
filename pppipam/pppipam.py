@@ -341,7 +341,11 @@ class AddressSpace:
         if isinstance(network_parameter, int):
             raise TypeError("network_parameter must not be int")
 
+        as_address = clean_address(network_parameter)
         as_network = clean_network(network_parameter)
+
+        if isinstance(as_address, IPAddressTuple):
+            raise ValueError("No address as parameter allowed")
 
         if isinstance(as_network, IPNetworkTuple):
             if self.__get_supernet(as_network) is not None:
