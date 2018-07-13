@@ -59,6 +59,24 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
     def test_address_space_cannot_describe_address_if_no_previous_net(self):
         """An address can only be described if a supernet exists."""
         address_space = AddressSpace(strict=True)
+        for data in (
+            ("203.0.113.128", "a IPv4 test net address"),
+        ):
+            with self.subTest(data=data):
+                no_previous_supernet = False
+                try:
+                    address_space.describe(
+                        ip_parameter=data[0],
+                        description=data[1],
+                    )
+                except StrictSupernetError:
+                    no_previous_supernet = True
+                self.assertTrue(
+                    no_previous_supernet,
+                    "If strict address space, can describe address only "
+                    "if supernet already exists",
+                )
+
         no_previous_supernet = False
         try:
             address_space.describe(
