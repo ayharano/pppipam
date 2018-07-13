@@ -158,6 +158,32 @@ class AddressSpace:
                 ...
             TypeError: ip_parameter must not be int
             >>>
+            >>> sas = AddressSpace(strict_=True)
+            >>> sas.describe(description="address without supernet",
+            ...              ip_parameter="10.98.76.54")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.StrictSupernetError
+            >>> sas.describe(description="network without supernet",
+            ...              ip_parameter="2001:db8:abcd::/48")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.StrictSupernetError
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="2000::/3",
+            ...     description="current global IPv6 network")
+            True
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="127.0.0.0/8",
+            ...     description="IPv4 loopback network")
+            True
+            >>> sas.describe(description="IPv6 doc net part of global",
+            ...              ip_parameter="2001:db8::/32")
+            True
+            >>> sas.describe(ip_parameter='127.0.0.1',
+            ...              description='I have seen this in a t-shirt')
+            True
+            >>>
         """
 
         if description == "":
@@ -347,6 +373,41 @@ class AddressSpace:
             Traceback (most recent call last):
                 ...
             TypeError: ip_parameter must not be int
+            >>> sas = AddressSpace(strict_=True)
+            >>> sas.describe_new_delegated_network(
+            ...     description='An IPv6 documentation network',
+            ...     ip_parameter='2001:db8:abcd::/48')
+            True
+            >>> sas.describe(description='An IPv6 address in doc net',
+            ...              ip_parameter='2001:db8:abcd::1234')
+            True
+            >>> sas.describe_new_delegated_network(
+            ...     ip_parameter='198.51.100.0/24',
+            ...     description="TEST-NET-2 (RFC5735)")
+            True
+            >>> sas.describe(description="An address in test net",
+            ...              ip_parameter="198.51.100.123")
+            True
+            >>> sas.description("2001:db8:abcd::/48")
+            'An IPv6 documentation network'
+            >>> sas.description("2001:db8:abcd::1234")
+            'An IPv6 address in doc net'
+            >>> sas.description("2001:db8:abcd::98:7654:3210")
+            ''
+            >>> sas.description("2001:db8:abcd::/64")
+            ''
+            >>> sas.description("2001:db8:1234::/48")
+            >>> sas.description("fe80::")
+            >>> sas.description("198.51.100.0/24")
+            'TEST-NET-2 (RFC5735)'
+            >>> sas.description("198.51.100.123")
+            'An address in test net'
+            >>> sas.description("198.51.100.100")
+            ''
+            >>> sas.description("198.51.100.128/25")
+            ''
+            >>> sas.description("198.51.99.0")
+            >>> sas.description("198.51.123.0/24")
             >>>
         """
 
