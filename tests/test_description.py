@@ -14,7 +14,7 @@ class AddressSpace_description_TestCase(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures with new AddressSpace."""
-        self.address_space = AddressSpace()
+        self.address_space = AddressSpace(strict=False)
 
     def test_address_space_as_AddressSpace(self):
         """Validate if address_space is instance of AddressSpace."""
