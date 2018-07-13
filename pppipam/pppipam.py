@@ -208,7 +208,7 @@ class AddressSpace:
 
             supernet = self.__get_supernet(as_address)
             if self.__strict and supernet is None:
-                raise StrictSupernetError()
+                raise StrictSupernetError("supernet not found")
 
             version_set = self.__addresses.setdefault(
                 as_address.version, set()
@@ -232,7 +232,7 @@ class AddressSpace:
             if (
                 self.__strict and supernet is None and not is_new_delegated_net
             ):
-                raise StrictSupernetError()
+                raise StrictSupernetError("supernet not found")
 
 
             version_set = self.__networks.setdefault(as_network.version, set())
@@ -364,9 +364,9 @@ class AddressSpace:
 
         if isinstance(as_network, IPNetworkTuple):
             if self.__get_supernet(as_network) is not None:
-                raise StrictSupernetError()
+                raise StrictSupernetError("supernet already described")
             if as_network in self.__description:
-                raise SameDelegationAsNewError()
+                raise SameDelegationAsNewError("already described")
         else:
             raise TypeError("network_parameter must be "
                             "a valid IP network parameter")
