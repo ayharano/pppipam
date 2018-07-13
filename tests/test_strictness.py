@@ -6,7 +6,7 @@
 import dataclasses
 import unittest
 
-from pppipam.pppipam import AddressSpace
+from pppipam.pppipam import AddressSpace, StrictSupernetException
 
 
 class AddressSpace_strictness_TestCase(unittest.TestCase):
