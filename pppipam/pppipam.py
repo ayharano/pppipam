@@ -41,11 +41,11 @@ class AddressSpace:
     __description: typing.Dict[IPObject, str]
     __networks: typing.Dict[int, typing.Set[IPNetwork]]
     __addresses: typing.Dict[int, typing.Set[IPAddress]]
-    strict: InitVar[bool] = True
+    strict_: InitVar[bool] = True
 
-    def __init__(self, *, strict: bool = True) -> None:
+    def __init__(self, *, strict_: bool = True) -> None:
         """Handles init-only var into private var."""
-        self.__strict = bool(strict)
+        self.__strict = bool(strict_)
         self.__description = dict()
         self.__networks = dict()
         self.__addresses = dict()
