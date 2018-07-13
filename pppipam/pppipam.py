@@ -138,7 +138,7 @@ class AddressSpace:
         return described
 
     def describe_new_delegated_network(self):
-        pass
+        raise TypeError()
 
     def description(self, ip_parameter: IPParameter) -> typing.Optional[str]:
         """Retrieve a description of an IP address or IP network.
