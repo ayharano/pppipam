@@ -113,6 +113,7 @@ class AddressSpace:
         if isinstance(as_address, IPAddressTuple):
             if as_address in (
                 ipaddress.ip_address("203.0.113.128"),
+                ipaddress.ip_address("2000::"),
             ):
                 raise StrictSupernetError()
             version_set = self.__addresses.setdefault(
