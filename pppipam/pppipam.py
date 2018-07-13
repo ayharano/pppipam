@@ -422,21 +422,21 @@ class AddressSpace:
         ):
             raise TypeError("ip_parameter must be a valid IP parameter")
 
-        if as_address in self.__description:
-            return self.__description[as_address]
-        elif as_network in self.__description:
-            return self.__description[as_network]
 
         if isinstance(as_address, IPAddressTuple):
-            if as_address.version in self.__networks:
-                for tentative_net in self.__networks[as_address.version]:
-                    if as_address in tentative_net:
-                        return str("")
+            if as_address in self.__description:
+                return self.__description[as_address]
+
+            supernet = self.__get_supernet(as_address)
+            if supernet is not None:
+                return str("")
 
         if isinstance(as_network, IPNetworkTuple):
-            if as_network.version in self.__networks:
-                for tentative_net in self.__networks[as_network.version]:
-                    if as_network.subnet_of(tentative_net):
-                        return str("")
+            if as_network in self.__description:
+                return self.__description[as_network]
+
+            supernet = self.__get_supernet(as_network)
+            if supernet is not None:
+                return str("")
 
         return None
