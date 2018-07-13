@@ -28,18 +28,18 @@ class AddressSpace:
     """IP addresses and networks description manager."""
 
     __strict: bool
+    __description: typing.Dict[IPObject, str]
+    __networks: typing.Dict[int, typing.Set[IPNetwork]]
+    __addresses: typing.Dict[int, typing.Set[IPAddress]]
     strict: InitVar[bool] = True
-    __description: typing.Dict[IPObject, str] = field(default_factory=dict)
-    __networks: typing.Dict[int, typing.Set[IPNetwork]] = field(
-        default_factory=dict
-    )
-    __addresses: typing.Dict[int, typing.Set[IPAddress]] = field(
-        default_factory=dict
-    )
 
-    def __post__init__(self, strict: bool) -> None:
+
+    def __init__(self, strict: bool = True) -> None:
         """Handles init-only var into private var."""
         self.__strict = bool(strict)
+        self.__description = dict()
+        self.__networks = dict()
+        self.__addresses = dict()
 
     @property
     def strict(self) -> bool:
