@@ -81,3 +81,19 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                     "If strict address space, can describe address only "
                     "if supernet already exists",
                 )
+
+    def test_delegated_network_no_empty_arguments(self):
+        """New delegated network method with no empty argument list."""
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                address_space = AddressSpace(strict=strict)
+                no_empty_arguments = False
+                try:
+                    address_space.describe_new_delegated_network()
+                except TypeError:
+                    no_empty_arguments = True
+                self.assertTrue(
+                    no_empty_arguments,
+                    "Empty arguments should not be accepted in "
+                    "describe_new_delegated_network",
+                )
