@@ -138,3 +138,40 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                             "Describe a network without a previous inserted "
                             "supernet",
                         )
+
+    def test_delegated_network_into_address_space(self):
+        """Inserting delegation with present supernet must raise exception."""
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                address_space = AddressSpace(strict=strict)
+                for data in (
+                    ("2001:db8::/32", "2001:db8::/48"),
+                    ("203.0.113.0/24", "203.0.113.0/27"),
+                    ("fdab:cdef:1234::/48", "fdab:cdef:1234:5678::/64"),
+                    ("192.0.2.0/24", "102.0.2.128/26"),
+                    ("::/0", "::ab00/126"),
+                    ("0.0.0.0/0", "10.0.0.0/8"),
+                ):
+                    with self.subTest(data=data):
+                        self.assertTrue(
+                            address_space.describe_new_delegated_network(
+                                network_parameter=data[0],
+                                description="actual delegation",
+                            ),
+                            "Describe a network without a previous inserted "
+                            "supernet",
+                        )
+                        supernet_detected = False
+                        try:
+                            address_space.describe_new_delegated_network(
+                                network_parameter=data[1],
+                                description="trying subnet as delegated",
+                            )
+                        except StrictSupernetError:
+                            supernet_detected = True
+                        self.assertTrue(
+                            supernet_detected,
+                            "If inserting delegated network, no supernet "
+                            "should be present, for strict and non strict "
+                            "address spaces"
+                        )
