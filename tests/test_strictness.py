@@ -123,6 +123,11 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                 address_space = AddressSpace(strict=strict)
                 for data in (
                     ("2001:db8::/32", "IPv6 documentation network space"),
+                    ("203.0.113.0/24", "one of IPv4 test net"),
+                    ("fdab:cdef:1234::/48", "an IPv6 unique-local net"),
+                    ("192.0.2.0/24", "another IPv4 test net"),
+                    ("::/0", "whole IPv6 address space"),
+                    ("0.0.0.0/0", "whole IPv4 address space"),
                 ):
                     with self.subTest(data=data):
                         self.assertTrue(
