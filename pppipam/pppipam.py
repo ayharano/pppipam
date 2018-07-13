@@ -288,6 +288,54 @@ class AddressSpace:
                                  already exists.
             SameDelegationAsNewError: trying to insert a network
                                       as new when already present.
+
+        doctest example:
+            >>> as_ = AddressSpace(strict_=False)
+            >>> as_.describe(ip_parameter="127.127.127.127",
+            ...              description="a IPv4 loopback address")
+            True
+            >>> as_.describe_new_delegated_network(
+            ...     network_parameter="127.127.127.127/32",
+            ...     description="same address, as a network")
+            True
+            >>> as_.describe(ip_parameter="10.10.0.0/16",
+            ...              description="a private new")
+            True
+            >>> as_.describe_new_delegated_network(
+            ...     network_parameter="10.0.0.0/8",
+            ...     description="supernet is fine")
+            True
+            >>> as_.describe_new_delegated_network(
+            ...     network_parameter="10.0.0.0/12",
+            ...     description="no subnet, even in non strict")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.StrictSupernetError
+            >>> sas = AddressSpace(strict_=True)
+            >>> sas.describe(ip_parameter="2001:db8::/48",
+            ...              description="must delegate new first in strict")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.StrictSupernetError
+            >>> sas.describe(ip_parameter="2001:db8::",
+            ...              description="of course for address too")
+            Traceback (most recent call last):
+                ...
+            pppipam.pppipam.StrictSupernetError
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="2001:db8:abcd::",
+            ...     description="but not an address")
+            Traceback (most recent call last):
+                ...
+            ValueError: No address as parameter allowed
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="2001:db8:abcd::/48",
+            ...     description="now it's a go, at least for ipv6")
+            True
+            >>> sas.describe_new_delegated_network(
+            ...     network_parameter="127.127.0.0/16",
+            ...     description="and ipv4 also")
+            True
         """
 
         if isinstance(network_parameter, int):
