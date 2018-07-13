@@ -115,3 +115,16 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                     "No positional argument should be accepted in "
                     "describe_new_delegated_network",
                 )
+
+    def test_delegated_network_into_address_space(self):
+        """Inserts a network without supernet present in address space."""
+        for strict in (False, True):
+            with self.subTest(strict=strict):
+                address_space = AddressSpace(strict=strict)
+                self.assertTrue(
+                    address_space.describe_new_delegated_network(
+                        network_parameter="2001:db8::/32",
+                        description="IPv6 documentation network space",
+                    ),
+                    "Describe a network without a previous inserted supernet",
+                )
