@@ -3,7 +3,6 @@
 
 """Tests related to enforce pppipam.AddressSpace' strictness (default)."""
 
-import dataclasses
 import unittest
 
 from pppipam.pppipam import (
