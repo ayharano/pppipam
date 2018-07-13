@@ -3,7 +3,7 @@
 
 """PPPIPAM main module."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 import ipaddress
 import typing
 
@@ -23,11 +23,12 @@ IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
-@dataclass
+@dataclass(init=False)
 class AddressSpace:
     """IP addresses and networks description manager."""
 
-    __strict: bool = True
+    __strict: bool
+    strict: InitVar[bool] = True
     __description: typing.Dict[IPObject, str] = field(default_factory=dict)
     __networks: typing.Dict[int, typing.Set[IPNetwork]] = field(
         default_factory=dict
@@ -35,6 +36,10 @@ class AddressSpace:
     __addresses: typing.Dict[int, typing.Set[IPAddress]] = field(
         default_factory=dict
     )
+
+    def __post__init__(self, strict: bool) -> None:
+        """Handles init-only var into private var."""
+        self.__strict = bool(strict)
 
     @property
     def strict(self) -> bool:
