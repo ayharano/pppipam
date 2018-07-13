@@ -151,10 +151,17 @@ class AddressSpace:
     def describe_new_delegated_network(
         self, *, network_parameter, description
     ):
+        if isinstance(network_parameter, int):
+            raise TypeError("network_parameter must not be int")
+
         as_network = clean_network(network_parameter)
 
-        if self.__get_supernet(as_network) is not None:
-            raise StrictSupernetError()
+        if isinstance(as_network, IPNetworkTuple):
+            if self.__get_supernet(as_network) is not None:
+                raise StrictSupernetError()
+        else:
+            raise TypeError("network_parameter must be "
+                            "a valid IP network parameter")
 
         return self.describe(
             ip_parameter=as_network,
