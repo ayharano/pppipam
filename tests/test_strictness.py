@@ -212,3 +212,29 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
                             "Cannot insert same delegation as new more than "
                             "once",
                         )
+
+    def test_address_space_cannot_describe_net_if_no_previous_supernet(self):
+        """A network can only be described if a supernet exists."""
+        address_space = AddressSpace(strict_=True)
+        for data in (
+            ("203.0.113.0/24", "an IPv4 test net"),
+            ("2000::/3", "Current loose global IPv6 network"),
+            ("192.0.2.0/24", "another IPv4 test net"),
+            ("fe80::/64", "IPv6 link-local network"),
+            ("10.123.0.0/16", "A private IPv4 address"),
+            ("2001:db8:ab00::/40", "An IPv6 network in doc range"),
+        ):
+            with self.subTest(data=data):
+                no_previous_supernet = False
+                try:
+                    address_space.describe(
+                        ip_parameter=data[0],
+                        description=data[1],
+                    )
+                except StrictSupernetError:
+                    no_previous_supernet = True
+                self.assertTrue(
+                    no_previous_supernet,
+                    "If strict address space, can describe networks only "
+                    "if supernet already exists",
+                )
