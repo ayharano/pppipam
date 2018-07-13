@@ -3,9 +3,9 @@
 
 """PPPIPAM main module."""
 
-from dataclasses import dataclass, field, InitVar
 import ipaddress
 import typing
+from dataclasses import dataclass, InitVar
 
 from pppipam.helpers import (
     IPAddressParameter,
@@ -68,6 +68,8 @@ class AddressSpace:
                     continue
                 if cleaned_ip_object.subnet_of(tentative_supernet):
                     return tentative_supernet
+
+        return None
 
     @property
     def strict(self) -> bool:
@@ -268,3 +270,5 @@ class AddressSpace:
                 for tentative_net in self.__networks[as_network.version]:
                     if as_network.subnet_of(tentative_net):
                         return str("")
+
+        return None
