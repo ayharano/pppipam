@@ -41,6 +41,10 @@ class AddressSpace:
     __description: typing.Dict[IPObject, str]
     __networks: typing.Dict[int, typing.Set[IPNetwork]]
     __addresses: typing.Dict[int, typing.Set[IPAddress]]
+    __parent_supernet: typing.Dict[IPObject, IPNetwork]
+    __children_ip_object: typing.Dict[
+        typing.Optional[IPNetwork], typing.Set[IPObject]
+    ]
     strict_: InitVar[bool] = True
 
     def __init__(self, *, strict_: bool = True) -> None:
@@ -55,6 +59,11 @@ class AddressSpace:
         self.__description = dict()
         self.__networks = dict()
         self.__addresses = dict()
+        self.__parent_supernet = dict()
+        self.__children_ip_object = dict()
+
+        # None is address space top supernet parent.
+        self.__children_ip_object[None] = set()
 
     def __get_supernet(self, cleaned_ip_object):
         """Retrieves a supernet of IP object, if it exists.
@@ -155,21 +164,56 @@ class AddressSpace:
         described = False
 
         if isinstance(as_address, IPAddressTuple):
-            if self.__strict and self.__get_supernet(as_address) is None:
+            supernet = self.__get_supernet(as_address)
+            if self.__strict and supernet is None:
                 raise StrictSupernetError()
+
             version_set = self.__addresses.setdefault(
                 as_address.version, set()
             )
             version_set.add(as_address)
             self.__description[as_address] = description
             described = True
+
+            self.__parent_supernet[as_address] = supernet
+            children_of_supernet = (
+                self.__children_ip_object.setdefault(supernet, set())
+            )
+            children_of_supernet.add(as_address)
         elif isinstance(as_network, IPNetworkTuple):
-            if self.__strict and self.__get_supernet(as_network) is None:
+            supernet = self.__get_supernet(as_network)
+            if self.__strict and supernet is None:
                 raise StrictSupernetError()
+
             version_set = self.__networks.setdefault(as_network.version, set())
             version_set.add(as_network)
             self.__description[as_network] = description
             described = True
+
+            self.__parent_supernet[as_address] = supernet
+            children_of_as_network = (
+                self.__children_ip_object.setdefault(as_network, set())
+            )
+            children_of_supernet = (
+                self.__children_ip_object.setdefault(supernet, set())
+            )
+            # Supernet's child can be as_network's child
+            version = as_network.version
+            to_arrange = set()
+            for tentative_child in children_of_supernet:
+                if (isinstance(tentative_child, IPAddressTuple)
+                        and tentative_child.version == version
+                        and tentative_child in as_network):
+                    to_arrange.add(tentative_child)
+                elif (isinstance(tentative_child, IPNetworkTuple)
+                        and tentative_child.version == version
+                        and tentative_child.subnet_of(as_network)):
+                    to_arrange.add(tentative_child)
+            for child in to_arrange:
+                self.__parent_supernet[child] = as_network
+                children_of_as_network.add(child)
+                children_of_supernet.remove(child)
+            children_of_supernet.add(as_address)
         else:
             raise TypeError("ip_parameter must be a valid IP parameter")
 
