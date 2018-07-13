@@ -44,13 +44,31 @@ class AddressSpace:
     strict_: InitVar[bool] = True
 
     def __init__(self, *, strict_: bool = True) -> None:
-        """Handles init-only var into private var."""
+        """Handles init-only var into private var.
+
+        Args:
+            strict_: if evaluated to True, stricts address space
+                     handling by only permitting descriptions if
+                     previous delegated networks are inserted.
+        """
         self.__strict = bool(strict_)
         self.__description = dict()
         self.__networks = dict()
         self.__addresses = dict()
 
     def __get_supernet(self, cleaned_ip_object):
+        """Retrieves a supernet of IP object, if it exists.
+
+        Args:
+            cleaned_ip_object: IP object to be verified.
+
+        Returns:
+            An IP network object if a supernet exists or
+            None, otherwise.
+
+        Raises:
+            AttribureError: if parameter is not an IP object.
+        """
 
         version = cleaned_ip_object.version
 
@@ -158,6 +176,24 @@ class AddressSpace:
     def describe_new_delegated_network(
         self, *, network_parameter, description
     ):
+        """Describe a new delegated network, if possible.
+
+        Args:
+            network_parameter: value to be processed as an IP network.
+            description: non-empty str to describe IP network.
+
+        Returns:
+            bool if successfully described.
+
+        Raises:
+            TypeError: parameters not of expected type.
+            ValueError: invalid description value.
+            StrictSupernetError: a supernet of network parameter
+                                 already exists.
+            SameDelegationAsNewError: trying to insert a network
+                                      as new when already present.
+        """
+
         if isinstance(network_parameter, int):
             raise TypeError("network_parameter must not be int")
 
