@@ -121,10 +121,15 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         for strict in (False, True):
             with self.subTest(strict=strict):
                 address_space = AddressSpace(strict=strict)
-                self.assertTrue(
-                    address_space.describe_new_delegated_network(
-                        network_parameter="2001:db8::/32",
-                        description="IPv6 documentation network space",
-                    ),
-                    "Describe a network without a previous inserted supernet",
-                )
+                for data in (
+                    ("2001:db8::/32", "IPv6 documentation network space"),
+                ):
+                    with self.subTest(data=data):
+                        self.assertTrue(
+                            address_space.describe_new_delegated_network(
+                                network_parameter=data[0],
+                                description=data[1],
+                            ),
+                            "Describe a network without a previous inserted "
+                            "supernet",
+                        )
