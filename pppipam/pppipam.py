@@ -24,7 +24,7 @@ IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
 
 class StrictSupernetError(Exception):
-    """Attempt to insert object without a previous supernet."""
+    """Error related to supernet missing or present."""
     pass
 
 
