@@ -509,4 +509,4 @@ class AddressSpace:
         return None
 
     def export_data(self):
-        return True
+        return dict()
