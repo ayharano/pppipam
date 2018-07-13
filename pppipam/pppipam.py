@@ -140,11 +140,13 @@ class AddressSpace:
     def describe_new_delegated_network(
         self, *, network_parameter, description
     ):
-        if self.__get_supernet(network_parameter) is not None:
+        as_network = clean_network(network_parameter)
+
+        if self.__get_supernet(as_network) is not None:
             raise StrictSupernetError()
 
         return self.describe(
-            ip_parameter=network_parameter,
+            ip_parameter=as_network,
             description=description
         )
 
