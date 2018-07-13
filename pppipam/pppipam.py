@@ -164,6 +164,8 @@ class AddressSpace:
         if isinstance(as_network, IPNetworkTuple):
             if self.__get_supernet(as_network) is not None:
                 raise StrictSupernetError()
+            if as_network in self.__description:
+                raise SameDelegationAsNewError()
         else:
             raise TypeError("network_parameter must be "
                             "a valid IP network parameter")
