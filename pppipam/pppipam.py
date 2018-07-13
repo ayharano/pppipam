@@ -103,7 +103,13 @@ class AddressSpace:
         """Returns strict value."""
         return bool(self.__strict)
 
-    def describe(self, *, ip_parameter: IPParameter, description: str) -> bool:
+    def describe(
+        self,
+        *,
+        ip_parameter: IPParameter,
+        description: str,
+        is_new_delegated_net: bool = False,
+    ) -> bool:
         """Insert an IP address or network with a description.
 
         Args:
@@ -111,6 +117,9 @@ class AddressSpace:
                           an IP network.
             description: non-empty str to describe IP address or
                          IP network.
+            is_new_delegated_net: if evaluates to True, will be used to
+                                  check if it must be treated as a new
+                                  network delegation.
 
         Returns:
             bool if successfully described.
@@ -158,12 +167,19 @@ class AddressSpace:
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
 
+        is_new_delegated_net = bool(is_new_delegated_net)
+
         as_address = clean_address(ip_parameter)
         as_network = clean_network(ip_parameter)
 
         described = False
 
         if isinstance(as_address, IPAddressTuple):
+            if is_new_delegated_net:
+                raise ValueError(
+                    "is_new_delegated_net was set with address parameter"
+                )
+
             supernet = self.__get_supernet(as_address)
             if self.__strict and supernet is None:
                 raise StrictSupernetError()
@@ -182,8 +198,16 @@ class AddressSpace:
             children_of_supernet.add(as_address)
         elif isinstance(as_network, IPNetworkTuple):
             supernet = self.__get_supernet(as_network)
-            if self.__strict and supernet is None:
+            if is_new_delegated_net and supernet is not None:
+                raise ValueError(
+                    "Invalid combination of existing supernet "
+                    "and new delegated network"
+                )
+            if (
+                self.__strict and supernet is None and not is_new_delegated_net
+            ):
                 raise StrictSupernetError()
+
 
             version_set = self.__networks.setdefault(as_network.version, set())
             version_set.add(as_network)
@@ -256,7 +280,8 @@ class AddressSpace:
 
         return self.describe(
             ip_parameter=as_network,
-            description=description
+            description=description,
+            is_new_delegated_net=True,
         )
 
     def description(self, ip_parameter: IPParameter) -> typing.Optional[str]:
