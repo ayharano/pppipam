@@ -62,6 +62,10 @@ class AddressSpace_strictness_TestCase(unittest.TestCase):
         for data in (
             ("203.0.113.128", "a IPv4 test net address"),
             ("2000::", "A 6 characts short IPv6 address"),
+            ("192.0.2.192", "another IPv4 test net address"),
+            ("fe80::abcd", "an IPv6 link-local address"),
+            ("10.123.45.67", "A private IPv4 address"),
+            ("2001:db8:abcd::1234", "An IPv6 address in doc range"),
         ):
             with self.subTest(data=data):
                 no_previous_supernet = False
