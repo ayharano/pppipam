@@ -150,11 +150,13 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
             ("192.0.2.64/26", "another 1/4 test subnet"),
             ("192.0.2.128/25", "1/2 of a test subnet"),
         )
-        self.address_tuples = (
+        self.direct_address_tuples = (
             ("2001:db8:9876:5432:10::", "direct IPv6 doc address"),
             ("203.0.113.200", "direct address of a IPv4 test net"),
             ("fdab:cdef:1234:c001::abcd", "direct IPv6 unique-local address"),
             ("192.0.2.12", "direct address of another IPv4 test net"),
+        )
+        self.subnet_address_tuples = (
             ("2001:db8::123", "digit address of zeroed doc subnet"),
             ("2001:db8::abc", "letter address of zeroed doc subnet"),
             ("2001:db8:1234::abc:123", "mixed address of digit doc subnet"),
@@ -189,7 +191,9 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                     ip_parameter=subnet_data[0],
                     description=subnet_data[1],
                 )
-            for address_data in self.address_tuples:
+            for address_data in (
+                *self.direct_address_tuples, *self.subnet_address_tuples
+            ):
                 self.address_spaces[strict].describe(
                     ip_parameter=address_data[0],
                     description=address_data[1],
@@ -199,7 +203,9 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
         """Deleting address with cascade False."""
         for value in self.address_spaces:
             with self.subTest(value=value):
-                for address_data in self.address_tuples:
+                for address_data in (
+                    *self.direct_address_tuples, *self.subnet_address_tuples
+                ):
                     self.assertTrue(
                         self.address_spaces[value].delete(
                             ip_parameter=address_data[0],
@@ -222,7 +228,9 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
         """Deleting address with cascade True."""
         for value in self.address_spaces:
             with self.subTest(value=value):
-                for address_data in self.address_tuples:
+                for address_data in (
+                    *self.direct_address_tuples, *self.subnet_address_tuples
+                ):
                     self.assertTrue(
                         self.address_spaces[value].delete(
                             ip_parameter=address_data[0],
@@ -255,7 +263,9 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                         "return True.",
                     )
                 for other_data in (
-                    *self.delegated_tuples, *self.address_tuples
+                    *self.delegated_tuples,
+                    *self.direct_address_tuples,
+                    *self.subnet_address_tuples,
                 ):
                     self.assertEqual(
                         self.address_spaces[value]
@@ -277,17 +287,19 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                         "Deleting a described IP object should "
                         "return True.",
                     )
-                for other_data in (*self.delegated_tuples,):
+                for other_data in (
+                    *self.delegated_tuples, *self.direct_address_tuples
+                ):
                     self.assertEqual(
                         self.address_spaces[value]
                         .description(other_data[0]),
                         other_data[1],
                         "Delegated net objects should not be affected"
                     )
-                for deleted_data in (*self.address_tuples,):
+                for deleted_data in (*self.subnet_address_tuples,):
                     self.assertEqual(
                         self.address_spaces[value]
-                        .description(other_data[0]),
+                        .description(deleted_data[0]),
                         '',
                         "Description of address in subnets should be removed,"
                         " but still in a subnet, so ''"
