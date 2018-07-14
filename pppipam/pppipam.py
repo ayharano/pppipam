@@ -523,10 +523,14 @@ class AddressSpace:
         return None
 
     def delete(self, *, ip_parameter, cascade):
-        if ip_parameter in (
-            ipaddress.ip_address("203.0.113.128"),
-        ):
+
+        as_address = clean_address(ip_parameter)
+        as_network = clean_network(ip_parameter)
+
+        if as_address in self.__description:
             return True
+
+        raise IPObjectNotInSpaceError("cannot delete undescribed IP object")
 
     def __gather_nested_children(
        self, ip_object: IPObject
