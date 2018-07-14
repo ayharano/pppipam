@@ -56,7 +56,8 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
     def test_delete_deleting_object_in_space_returns_true(self):
         """Deleting a described IP object should return True."""
         for parameter_description in (
-            ("203.0.113.128", "an IPv4 test net"),
+            ("203.0.113.128", "an IPv4 test net address"),
+            ("2001:db8:abcd::/48", "an IPv6 doc subnet"),
         ):
             with self.subTest(parameter_description=parameter_description):
                 self.assertTrue(
