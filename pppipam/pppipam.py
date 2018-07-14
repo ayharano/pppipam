@@ -33,6 +33,11 @@ class SameDelegationAsNewError(Exception):
     pass
 
 
+class IPObjectNotInSpaceError(Exception):
+    """Error due to IP object not in space and should be treated."""
+    pass
+
+
 @dataclass(init=False)
 class AddressSpace:
     """IP addresses and networks description manager."""
