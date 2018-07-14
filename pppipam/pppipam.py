@@ -289,7 +289,7 @@ class AddressSpace:
             self.__description[as_network] = description
             described = True
 
-            self.__parent_supernet[as_address] = supernet
+            self.__parent_supernet[as_network] = supernet
             children_of_as_network = (
                 self.__children_ip_object.setdefault(as_network, set())
             )
