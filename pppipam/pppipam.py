@@ -521,6 +521,8 @@ class AddressSpace:
 
             for version in children_per_version:
                 version_nest = nested_ip_objects.setdefault(version, dict())
+                for child in children_per_version[version]:
+                    pass
 
         return dict({
             "description": dict(self.__description),
