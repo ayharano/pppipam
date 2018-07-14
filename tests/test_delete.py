@@ -304,3 +304,28 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                         "Description of address in subnets should be removed,"
                         " but still in a subnet, so ''"
                     )
+
+    def test_address_space_delete_delegated_cascade_false(self):
+        """Deleting delegated with cascade False."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                for delegated_data in self.delegated_tuples:
+                    self.assertTrue(
+                        self.address_spaces[value].delete(
+                            ip_parameter=delegated_data[0],
+                            cascade=False,
+                        ),
+                        "Deleting a described IP object should "
+                        "return True.",
+                    )
+                for other_data in (
+                    *self.subnet_tuples,
+                    *self.direct_address_tuples,
+                    *self.subnet_address_tuples,
+                ):
+                    self.assertEqual(
+                        self.address_spaces[value]
+                        .description(other_data[0]),
+                        other_data[1],
+                        "Other objects should not be affected"
+                    )
