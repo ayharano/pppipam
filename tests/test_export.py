@@ -9,13 +9,15 @@ import unittest
 from pppipam.pppipam import AddressSpace
 
 
-class AddressSpace_export_TestCase(unittest.TestCase):
+class AddressSpace_default_export_TestCase(unittest.TestCase):
     """Tests related to AddressSpace's data export."""
+
+    def setUp(self):
+        self.address_spaces = AddressSpace()
 
     def test_address_space_export_for_default_instance(self):
         """Default instance should evaluate to True."""
-        default_address_space = AddressSpace()
-        exported_data = default_address_space.export_data()
+        exported_data = self.address_spaces.export_data()
         self.assertTrue(
             exported_data,
             "exported data should truth evaluate to True"
@@ -23,8 +25,7 @@ class AddressSpace_export_TestCase(unittest.TestCase):
 
     def test_address_space_export_for_default_instance_should_be_dict(self):
         """Default instance should return dict with default values."""
-        default_address_space = AddressSpace()
-        exported_data = default_address_space.export_data()
+        exported_data = self.address_spaces.export_data()
         self.assertIsInstance(
             exported_data,
             dict,
@@ -33,8 +34,7 @@ class AddressSpace_export_TestCase(unittest.TestCase):
 
     def test_address_space_export_for_default_instance_should_have_keys(self):
         """Default instance should return dict with keys."""
-        default_address_space = AddressSpace()
-        exported_data = default_address_space.export_data()
+        exported_data = self.address_spaces.export_data()
         for key in ("description", "nested_ip_object"):
             with self.subTest(key=key):
                 self.assertIn(
@@ -45,8 +45,7 @@ class AddressSpace_export_TestCase(unittest.TestCase):
 
     def test_address_space_export_for_default_instance_exact_keys(self):
         """Default instance should return dict with keys."""
-        default_address_space = AddressSpace()
-        exported_data = default_address_space.export_data()
+        exported_data = self.address_spaces.export_data()
         keys = set({"description", "nested_ip_object"})
         self.assertEqual(
             keys,
@@ -54,15 +53,19 @@ class AddressSpace_export_TestCase(unittest.TestCase):
             "exported data should have exactly required keys"
         )
 
-    def test_address_space_export(self):
+
+class AddressSpace_more_data_export_TestCase(unittest.TestCase):
+    """Actual-like data for AddressSpace's data export."""
+
+    def setUp(self):
         """Export AddressSpace's data."""
-        delegated_tuples = (
+        self.delegated_tuples = (
             ("2001:db8::/32", "IPv6 documentation network space"),
             ("203.0.113.0/24", "one of IPv4 test net"),
             ("fdab:cdef:1234::/48", "an IPv6 unique-local net"),
             ("192.0.2.0/24", "another IPv4 test net"),
         )
-        subnet_tuples = (
+        self.subnet_tuples = (
             ("2001:db8::/48", "zeroed doc subnet"),
             ("2001:db8:1234::/48", "digit doc subnet"),
             ("2001:db8:abcd::/48", "letter doc subnet"),
@@ -73,7 +76,7 @@ class AddressSpace_export_TestCase(unittest.TestCase):
             ("192.0.2.64/26", "another 1/4 test subnet"),
             ("192.0.2.128/25", "1/2 of a test subnet"),
         )
-        address_tuples = (
+        self.address_tuples = (
             ("2001:db8:9876:5432:10::", "direct IPv6 doc address"),
             ("203.0.113.200", "direct address of a IPv4 test net"),
             ("fdab:cdef:1234:c001::abcd", "direct IPv6 unique-local address"),
@@ -98,16 +101,16 @@ class AddressSpace_export_TestCase(unittest.TestCase):
             ("192.0.2.234", "234 of 1/2 of a test subnet"),
         )
 
-        exported = dict()
-        exported_description = exported.setdefault("description", dict())
-        for net_tuple in (*delegated_tuples, *subnet_tuples):
+        self.exported = dict()
+        exported_description = self.exported.setdefault("description", dict())
+        for net_tuple in (*self.delegated_tuples, *self.subnet_tuples):
             as_network = ipaddress.ip_network(net_tuple[0])
             exported_description[as_network] = net_tuple[1]
-        for address_tuple in address_tuples:
+        for address_tuple in self.address_tuples:
             as_address = ipaddress.ip_address(address_tuple[0])
             exported_description[as_address] = address_tuple[1]
 
-        exported["nested_ip_objects"] = {
+        self.exported["nested_ip_objects"] = {
             4: {
                 ipaddress.ip_network("203.0.113.0/24"): {
                     ipaddress.ip_address("203.0.113.200"): dict(),
@@ -168,40 +171,34 @@ class AddressSpace_export_TestCase(unittest.TestCase):
             },
         }
 
+        self.address_spaces = dict()
+
         for strict in (False, True):
-            with self.subTest(strict_=strict):
-                address_space = AddressSpace(strict_=strict)
-                for delegated_data in delegated_tuples:
-                    self.assertTrue(
-                        address_space.describe_new_delegated_network(
-                            network_parameter=delegated_data[0],
-                            description=delegated_data[1],
-                        ),
-                        "Describe a network without a previous inserted "
-                        "supernet",
-                    )
-                for subnet_data in subnet_tuples:
-                    self.assertTrue(
-                        address_space.describe(
-                            ip_parameter=subnet_data[0],
-                            description=subnet_data[1],
-                            ),
-                        "Subnet description should be successful",
-                    )
-                for address_data in address_tuples:
-                    self.assertTrue(
-                        address_space.describe(
-                            ip_parameter=address_data[0],
-                            description=address_data[1],
-                            ),
-                        "Address description should be successful",
-                    )
-                # actual_exported_data = address_space.export_data()
-                # self.assertTrue(
-                #     actual_exported_data, "should be evaluated as True"
-                # )
-                # self.assertEquals(
-                #     exported["description"],
-                #     actual_exported_data["description"],
-                #     "exported description data should match",
-                # )
+            self.address_spaces[strict] = AddressSpace(strict_=strict)
+            for delegated_data in self.delegated_tuples:
+                self.address_spaces[strict].describe_new_delegated_network(
+                    network_parameter=delegated_data[0],
+                    description=delegated_data[1],
+                )
+            for subnet_data in self.subnet_tuples:
+                self.address_spaces[strict].describe(
+                    ip_parameter=subnet_data[0],
+                    description=subnet_data[1],
+                )
+            for address_data in self.address_tuples:
+                self.address_spaces[strict].describe(
+                    ip_parameter=address_data[0],
+                    description=address_data[1],
+                )
+
+    def test_more_data_export(self):
+        pass
+        # actual_exported_data = address_space.export_data()
+        # self.assertTrue(
+        #     actual_exported_data, "should be evaluated as True"
+        # )
+        # self.assertEquals(
+        #     exported["description"],
+        #     actual_exported_data["description"],
+        #     "exported description data should match",
+        # )
