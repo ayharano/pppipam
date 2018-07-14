@@ -509,10 +509,18 @@ class AddressSpace:
         return None
 
     def export_data(self):
-        nested_ip_objects = dict({
-            key: None
-            for key in set(self.__networks).union(set(self.__addresses))
-        })
+        nested_ip_objects = dict()
+
+        if self.__children_ip_object and None in self.__children_ip_object:
+            children_per_version = dict()
+            for child in self.__children_ip_object[None]:
+                version_set = children_per_version.setdefault(
+                    child.version, set()
+                )
+                version_set.add(child)
+
+            for version in children_per_version:
+                version_nest = nested_ip_objects.setdefault(version, dict())
 
         return dict({
             "description": dict(self.__description),
