@@ -509,7 +509,12 @@ class AddressSpace:
         return None
 
     def export_data(self):
+        nested_ip_object = dict({
+            key: None
+            for key in set(self.__networks).union(set(self.__addresses))
+        })
+
         return dict({
             "description": dict(self.__description),
-            "nested_ip_object": dict()
+            "nested_ip_object": nested_ip_object,
         })
