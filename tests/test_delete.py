@@ -37,3 +37,18 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
             no_positional_arguments,
             "No positional argument should be accepted in delete",
         )
+
+    def test_delete_trying_to_delete_object_not_in_space_error_raise(self):
+        """Trying to delete an IP object not in space should raise Error."""
+        no_ip_object = False
+        try:
+            self.address_space.delete(
+                ip_parameter="203.0.113.128",
+                cascade=True,
+            )
+        except IPObjectNotInSpaceError:
+            no_ip_object = True
+        self.assertTrue(
+            no_ip_object,
+            "Cannot delete IP object without explicit description",
+        )
