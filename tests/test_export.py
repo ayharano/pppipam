@@ -60,6 +60,14 @@ class AddressSpace_default_export_TestCase(unittest.TestCase):
                     "exported data dict should have dicts"
                 )
 
+    def test_address_space_export_description_should_be_the_same(self):
+        """Exported description should be the same as instance's."""
+        self.assertEqual(
+            self.exported_data["description"],
+            self.address_space._AddressSpace__description,
+            "Exported description should be the same as instance's.",
+        )
+
 
 class AddressSpace_more_data_export_TestCase(unittest.TestCase):
     """Actual-like data for AddressSpace's data export."""
