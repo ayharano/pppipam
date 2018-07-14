@@ -68,6 +68,15 @@ class AddressSpace_default_export_TestCase(unittest.TestCase):
             "Exported description should be the same as instance's.",
         )
 
+    def test_address_space_export_nested_ip_object_keys(self):
+        """Nested IP object keys validation."""
+        self.assertEqual(
+            set(self.exported_data["nested_ip_object"]),
+            set(self.address_space._AddressSpace__networks)
+            .union(set(self.address_space._AddressSpace__addresses)),
+            "Exported nested IP object should have the same keys as "
+            "union of networks and address keys."
+        )
 
 class AddressSpace_more_data_export_TestCase(unittest.TestCase):
     """Actual-like data for AddressSpace's data export."""
