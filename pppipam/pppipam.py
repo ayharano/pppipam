@@ -518,7 +518,7 @@ class AddressSpace:
         return None
 
     def delete(self):
-        pass
+        raise TypeError()
 
     def __gather_nested_children(
        self, ip_object: IPObject
