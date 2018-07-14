@@ -7,18 +7,11 @@ import ipaddress
 import typing
 from dataclasses import dataclass, InitVar
 
-from pppipam.helpers import (
-    IPAddressParameter,
-    IPNetworkParameter,
-    IPAddress,
-    IPNetwork,
-    clean_address,
-    clean_network,
-)
+from . import helpers
 
 
-IPParameter = typing.Union[IPAddressParameter, IPNetworkParameter]
-IPObject = typing.Union[IPAddress, IPNetwork]
+IPParameter = typing.Union[helpers.IPAddressParameter, helpers.IPNetworkParameter]
+IPObject = typing.Union[helpers.IPAddress, helpers.IPNetwork]
 IPAddressTuple = tuple([ipaddress.IPv4Address, ipaddress.IPv6Address])
 IPNetworkTuple = tuple([ipaddress.IPv4Network, ipaddress.IPv6Network])
 
@@ -44,11 +37,11 @@ class AddressSpace:
 
     __strict: bool
     __description: typing.Dict[IPObject, str]
-    __networks: typing.Dict[int, typing.Set[IPNetwork]]
-    __addresses: typing.Dict[int, typing.Set[IPAddress]]
-    __parent_supernet: typing.Dict[IPObject, IPNetwork]
+    __networks: typing.Dict[int, typing.Set[helpers.IPNetwork]]
+    __addresses: typing.Dict[int, typing.Set[helpers.IPAddress]]
+    __parent_supernet: typing.Dict[IPObject, helpers.IPNetwork]
     __children_ip_object: typing.Dict[
-        typing.Optional[IPNetwork], typing.Set[IPObject]
+        typing.Optional[helpers.IPNetwork], typing.Set[IPObject]
     ]
     strict_: InitVar[bool] = True
 
@@ -72,7 +65,7 @@ class AddressSpace:
 
     def __get_supernet(
         self, cleaned_ip_object: IPObject
-    ) -> typing.Optional[IPNetwork]:
+    ) -> typing.Optional[helpers.IPNetwork]:
         """Retrieves the smallest supernet of IP object, if described.
 
         Args:
@@ -168,7 +161,7 @@ class AddressSpace:
         return True
 
     def __cascading_remove_ip_network(
-        self, ip_network_object: IPNetwork
+        self, ip_network_object: helpers.IPNetwork
     ) -> bool:
         """Recursively removes children IP objects and itself.
 
@@ -295,8 +288,8 @@ class AddressSpace:
 
         is_new_delegated_net = bool(is_new_delegated_net)
 
-        as_address = clean_address(ip_parameter)
-        as_network = clean_network(ip_parameter)
+        as_address = helpers.clean_address(ip_parameter)
+        as_network = helpers.clean_network(ip_parameter)
 
         described = False
 
@@ -370,7 +363,7 @@ class AddressSpace:
         return described
 
     def describe_new_delegated_network(
-        self, *, network_parameter: IPNetworkParameter, description: str
+        self, *, network_parameter: helpers.IPNetworkParameter, description: str
     ) -> bool:
         """Describe a new delegated network, if possible.
 
@@ -456,8 +449,8 @@ class AddressSpace:
         if isinstance(network_parameter, int):
             raise TypeError("network_parameter must not be int")
 
-        as_address = clean_address(network_parameter)
-        as_network = clean_network(network_parameter)
+        as_address = helpers.clean_address(network_parameter)
+        as_network = helpers.clean_network(network_parameter)
 
         if isinstance(as_address, IPAddressTuple):
             raise ValueError("No address as parameter allowed")
@@ -581,8 +574,8 @@ class AddressSpace:
         if isinstance(ip_parameter, int):
             raise TypeError("ip_parameter must not be int")
 
-        as_address = clean_address(ip_parameter)
-        as_network = clean_network(ip_parameter)
+        as_address = helpers.clean_address(ip_parameter)
+        as_network = helpers.clean_network(ip_parameter)
 
         if not isinstance(as_address, IPAddressTuple) and not isinstance(
             as_network, IPNetworkTuple
@@ -625,8 +618,8 @@ class AddressSpace:
                                      not registered.
         """
 
-        as_address = clean_address(ip_parameter)
-        as_network = clean_network(ip_parameter)
+        as_address = helpers.clean_address(ip_parameter)
+        as_network = helpers.clean_network(ip_parameter)
 
         if as_address in self.__description:
             return self.__remove_ip_object(as_address)
