@@ -125,6 +125,9 @@ class AddressSpace:
             self.__children_ip_object[supernet].remove(ip_object)
             del self.__parent_supernet[ip_object]
             del self.__description[ip_object]
+            self.__addresses[ip_object.version].remove(ip_object)
+            if not self.__addresses[ip_object.version]:
+                del self.__addresses[ip_object.version]
 
         elif isinstance(ip_object, IPNetworkTuple):
 
@@ -137,9 +140,13 @@ class AddressSpace:
                 self.__parent_supernet[child] = supernet
                 children_of_supernet.add(child)
 
+            self.__children_ip_object[supernet].remove(ip_object)
             del self.__children_ip_object[ip_object]
             del self.__parent_supernet[ip_object]
             del self.__description[ip_object]
+            self.__networks[ip_object.version].remove(ip_object)
+            if not self.__networks[ip_object.version]:
+                del self.__networks[ip_object.version]
 
         else:
 
