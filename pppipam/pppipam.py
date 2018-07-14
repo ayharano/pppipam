@@ -522,7 +522,7 @@ class AddressSpace:
 
         return None
 
-    def delete(self, ip_parameter):
+    def delete(self, ip_parameter, cascade):
         raise TypeError()
 
     def __gather_nested_children(
