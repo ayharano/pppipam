@@ -147,6 +147,23 @@ class AddressSpace:
 
         return True
 
+    def __cascading_remove_ip_network(self, ip_network_object):
+
+        children = list(self.__children_ip_object[ip_network_object])
+
+        for child in children:
+            if child not in self.__description:
+                continue
+
+            if isinstance(child, IPAddressTuple):
+                self.__remove_ip_object(child)
+            elif isinstance(child, IPNetworkTuple):
+                self.__cascading_remove_ip_network(child)
+            else:
+                raise TypeError("child must be a valid IP object")
+
+        return self.__remove_ip_object(ip_network_object)
+
     @property
     def strict(self) -> bool:
         """Returns strict value."""
@@ -565,7 +582,10 @@ class AddressSpace:
         if as_address in self.__description:
             return self.__remove_ip_object(as_address)
         elif as_network in self.__description:
-            return self.__remove_ip_object(as_network)
+            if cascade:
+                return self.__cascading_remove_ip_network(as_network)
+            else:
+                return self.__remove_ip_object(as_network)
 
         raise IPObjectNotInSpaceError("cannot delete undescribed IP object")
 
