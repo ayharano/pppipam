@@ -523,7 +523,7 @@ class AddressSpace:
         return None
 
     def delete(self, ip_parameter, cascade):
-        raise TypeError()
+        raise IPObjectNotInSpaceError()
 
     def __gather_nested_children(
        self, ip_object: IPObject
