@@ -12,7 +12,7 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
     """Tests related to delete method in AddressSpace."""
 
     def setUp(self):
-        self.address_space = AddressSpace()
+        self.address_space = AddressSpace(strict_=False)
 
     def test_delete_no_empty_arguments(self):
         """delete method with no empty argument list."""
