@@ -509,4 +509,4 @@ class AddressSpace:
         return None
 
     def export_data(self):
-        return dict({"description": None, "nested_ip_object": None})
+        return dict({"description": dict(), "nested_ip_object": dict()})
