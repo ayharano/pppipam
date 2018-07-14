@@ -112,6 +112,41 @@ class AddressSpace:
 
         return current_tentative
 
+    def __remove_ip_object(self, ip_object):
+
+        if ip_object not in self.__description:
+            raise IPObjectNotInSpaceError(
+                "cannot remove undescribed IP object"
+            )
+
+        if isinstance(ip_object, IPAddressTuple):
+
+            supernet = self.__parent_supernet[ip_object]
+            self.__children_ip_object[supernet].remove(ip_object)
+            del self.__parent_supernet[ip_object]
+            del self.__description[ip_object]
+
+        elif isinstance(ip_object, IPNetworkTuple):
+
+            supernet = self.__parent_supernet[ip_object]
+            children_of_supernet = (
+                self.__children_ip_object.setdefault(supernet, set())
+            )
+
+            for child in self.__children_ip_object[ip_object]:
+                self.__parent_supernet[child] = supernet
+                children_of_supernet.add(child)
+
+            del self.__children_ip_object[ip_object]
+            del self.__parent_supernet[ip_object]
+            del self.__description[ip_object]
+
+        else:
+
+            raise TypeError("ip_parameter must be a valid IP object")
+
+        return True
+
     @property
     def strict(self) -> bool:
         """Returns strict value."""
@@ -528,9 +563,9 @@ class AddressSpace:
         as_network = clean_network(ip_parameter)
 
         if as_address in self.__description:
-            return True
+            return self.__remove_ip_object(as_address)
         elif as_network in self.__description:
-            return True
+            return self.__remove_ip_object(as_network)
 
         raise IPObjectNotInSpaceError("cannot delete undescribed IP object")
 
