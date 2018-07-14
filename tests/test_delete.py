@@ -88,7 +88,8 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
                 )
 
     def test_delete_after_deleting_object_description_should_be_none(self):
-        """Deleting a described IP object should return True."""
+        """Description of a deleted IP object should return None
+           if no other IP object."""
         for parameter_description in (
             ("203.0.113.128", "an IPv4 test net address"),
             ("2001:db8:abcd::/48", "an IPv6 doc subnet"),
@@ -125,3 +126,74 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
                     None,
                     "No IP object, so description should be None",
                 )
+
+
+class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
+    """Actual-like data to delete AddressSpace data."""
+
+    def setUp(self):
+        """Export AddressSpace's data."""
+        self.delegated_tuples = (
+            ("2001:db8::/32", "IPv6 documentation network space"),
+            ("203.0.113.0/24", "one of IPv4 test net"),
+            ("fdab:cdef:1234::/48", "an IPv6 unique-local net"),
+            ("192.0.2.0/24", "another IPv4 test net"),
+        )
+        self.subnet_tuples = (
+            ("2001:db8::/48", "zeroed doc subnet"),
+            ("2001:db8:1234::/48", "digit doc subnet"),
+            ("2001:db8:abcd::/48", "letter doc subnet"),
+            ("203.0.113.0/26", "a 1/4 test subnet"),
+            ("203.0.113.128/27", "1/8 subnet"),
+            ("fdab:cdef:1234:5678::/64", "digit unique local subnet"),
+            ("fdab:cdef:1234:abcd::/64", "letter unique local subnet"),
+            ("192.0.2.64/26", "another 1/4 test subnet"),
+            ("192.0.2.128/25", "1/2 of a test subnet"),
+        )
+        self.address_tuples = (
+            ("2001:db8:9876:5432:10::", "direct IPv6 doc address"),
+            ("203.0.113.200", "direct address of a IPv4 test net"),
+            ("fdab:cdef:1234:c001::abcd", "direct IPv6 unique-local address"),
+            ("192.0.2.12", "direct address of another IPv4 test net"),
+            ("2001:db8::123", "digit address of zeroed doc subnet"),
+            ("2001:db8::abc", "letter address of zeroed doc subnet"),
+            ("2001:db8:1234::abc:123", "mixed address of digit doc subnet"),
+            ("2001:db8:1234::f00:ba", "letter address of digit doc subnet"),
+            ("2001:db8:abcd:abcd::abcd", "abcd address of letter doc subnet"),
+            ("2001:db8:abcd:1234:1234::", "1234 address of letter doc subnet"),
+            ("203.0.113.0", "first address of a 1/4 test subnet"),
+            ("203.0.113.63", "last address of a 1/4 test subnet"),
+            ("203.0.113.130", " almost at begining of 1/8 subnet"),
+            ("203.0.113.150", " almost at the end of 1/8 subnet"),
+            ("fdab:cdef:1234:5678::1234:5678", "12345678 address"),
+            ("fdab:cdef:1234:5678::abcd:abcd", "abcdabcd address"),
+            ("fdab:cdef:1234:abcd::7654:321", "reverse number address"),
+            ("fdab:cdef:1234:abcd::fe:dcba", "reverse letter address"),
+            ("192.0.2.64", "first of another 1/4 test subnet"),
+            ("192.0.2.127", "last of another 1/4 test subnet"),
+            ("192.0.2.200", "200 of 1/2 of a test subnet"),
+            ("192.0.2.234", "234 of 1/2 of a test subnet"),
+        )
+
+        self.address_spaces = dict()
+
+        for strict in (False, True):
+            self.address_spaces[strict] = AddressSpace(strict_=strict)
+            for delegated_data in self.delegated_tuples:
+                self.address_spaces[strict].describe_new_delegated_network(
+                    network_parameter=delegated_data[0],
+                    description=delegated_data[1],
+                )
+            for subnet_data in self.subnet_tuples:
+                self.address_spaces[strict].describe(
+                    ip_parameter=subnet_data[0],
+                    description=subnet_data[1],
+                )
+            for address_data in self.address_tuples:
+                self.address_spaces[strict].describe(
+                    ip_parameter=address_data[0],
+                    description=address_data[1],
+                )
+
+    def test_address_space_delete_for_more_data_instance(self):
+        pass
