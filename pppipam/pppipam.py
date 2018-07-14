@@ -84,19 +84,26 @@ class AddressSpace:
         if version not in self.__networks:
             return None
 
+        current_tentative = None
+        current_prefixlen = 0
+
         if isinstance(cleaned_ip_object, IPAddressTuple):
             for tentative_supernet in self.__networks[version]:
                 if cleaned_ip_object in tentative_supernet:
-                    return tentative_supernet
+                    if tentative_supernet.prefixlen > current_prefixlen:
+                        current_tentative = tentative_supernet
+                        current_prefixlen = tentative_supernet.prefixlen
 
         if isinstance(cleaned_ip_object, IPNetworkTuple):
             for tentative_supernet in self.__networks[version]:
                 if cleaned_ip_object == tentative_supernet:
                     continue
                 if cleaned_ip_object.subnet_of(tentative_supernet):
-                    return tentative_supernet
+                    if tentative_supernet.prefixlen > current_prefixlen:
+                        current_tentative = tentative_supernet
+                        current_prefixlen = tentative_supernet.prefixlen
 
-        return None
+        return current_tentative
 
     @property
     def strict(self) -> bool:
