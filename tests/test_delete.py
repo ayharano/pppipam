@@ -5,7 +5,7 @@
 
 import unittest
 
-from pppipam.pppipam import AddressSpace
+from pppipam.pppipam import AddressSpace, IPObjectNotInSpaceError
 
 
 class AddressSpace_delete_TestCase(unittest.TestCase):
