@@ -66,14 +66,14 @@ class AddressSpace:
         self.__children_ip_object[None] = set()
 
     def __get_supernet(self, cleaned_ip_object):
-        """Retrieves a supernet of IP object, if it exists.
+        """Retrieves the smallest supernet of IP object, if it exists.
 
         Args:
             cleaned_ip_object: IP object to be verified.
 
         Returns:
-            An IP network object if a supernet exists or
-            None, otherwise.
+            An IP network object with the largest prefix length
+            if a supernet exists or None, otherwise.
 
         Raises:
             AttribureError: if parameter is not an IP object.
@@ -517,29 +517,55 @@ class AddressSpace:
 
         return None
 
-    def __gather_nested_children(self, ip_parameter):
+    def __gather_nested_children(
+       self, ip_object: IPObject
+    ) -> typing.Dict[IPObject, dict]:
+        """Retrieves nested children of an IP object.
+
+        If parameter is an address, there is no child.
+        If parameter is a network, recursively calculates children's
+        nested children.
+
+        Args:
+            ip_object: IP object registered in address space.
+
+        Returns:
+            dict instance with nested children's dicts.
+
+        Raises:
+            TypeError: parameters not of expected type.
+            ValueError: children set not defined.
+        """
 
         nested_dict = dict()
 
-        if isinstance(ip_parameter, IPAddressTuple):
+        if isinstance(ip_object, IPAddressTuple):
 
             pass
 
-        elif isinstance(ip_parameter, IPNetworkTuple):
+        elif isinstance(ip_object, IPNetworkTuple):
 
-            if ip_parameter not in self.__children_ip_object:
+            if ip_object not in self.__children_ip_object:
                 raise ValueError("Network value should have children set")
 
-            for child in self.__children_ip_object[ip_parameter]:
+            for child in self.__children_ip_object[ip_object]:
                 nested_dict[child] = self.__gather_nested_children(child)
 
         else:
-            raise TypeError(f"unexpected parameter type: {type(ip_parameter)}")
+            raise TypeError(f"unexpected parameter type: {type(ip_object)}")
 
         return nested_dict
 
 
-    def export_data(self):
+    def export_data(self) -> typing.Dict[str, dict]:
+        """Exports data as dict.
+
+        Returns:
+            dict composed by a dict of IP objects' descriptions and
+            a dict of nested IP objects according to
+            available IP objects' version.
+        """
+
         nested_ip_objects = dict()
 
         if self.__children_ip_object and None in self.__children_ip_object:
