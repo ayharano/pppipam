@@ -13,53 +13,49 @@ class AddressSpace_default_export_TestCase(unittest.TestCase):
     """Tests related to AddressSpace's data export."""
 
     def setUp(self):
-        self.address_spaces = AddressSpace()
+        self.address_space = AddressSpace()
+        self.exported_data = self.address_space.export_data()
 
     def test_address_space_export_for_default_instance(self):
         """Default instance should evaluate to True."""
-        exported_data = self.address_spaces.export_data()
         self.assertTrue(
-            exported_data,
+            self.exported_data,
             "exported data should truth evaluate to True"
         )
 
     def test_address_space_export_for_default_instance_should_be_dict(self):
         """Default instance should return dict with default values."""
-        exported_data = self.address_spaces.export_data()
         self.assertIsInstance(
-            exported_data,
+            self.exported_data,
             dict,
             "exported data should be a dict"
         )
 
     def test_address_space_export_for_default_instance_should_have_keys(self):
         """Default instance should return dict with keys."""
-        exported_data = self.address_spaces.export_data()
         for key in ("description", "nested_ip_object"):
             with self.subTest(key=key):
                 self.assertIn(
                     key,
-                    exported_data,
+                    self.exported_data,
                     "exported data should have specific key"
                 )
 
     def test_address_space_export_for_default_instance_exact_keys(self):
         """Default instance should return dict with keys."""
-        exported_data = self.address_spaces.export_data()
         keys = set({"description", "nested_ip_object"})
         self.assertEqual(
             keys,
-            set(exported_data),
+            set(self.exported_data),
             "exported data should have exactly required keys"
         )
 
     def test_address_space_export_for_default_instance_values(self):
         """Default instance export data dict should have two dicts."""
-        exported_data = self.address_spaces.export_data()
         for key in ("description", "nested_ip_object"):
             with self.subTest(key=key):
                 self.assertIsInstance(
-                    exported_data[key],
+                    self.exported_data[key],
                     dict,
                     "exported data dict should have dicts"
                 )
@@ -208,7 +204,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         # self.assertTrue(
         #     actual_exported_data, "should be evaluated as True"
         # )
-        # self.assertEquals(
+        # self.assertEqual(
         #     exported["description"],
         #     actual_exported_data["description"],
         #     "exported description data should match",
