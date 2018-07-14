@@ -284,6 +284,23 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
                     "Exported description should be the same as instance's.",
                 )
 
+    def test_address_space_export_nested_ip_object_keys(self):
+        """Nested IP object keys validation."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                network_keys = set(
+                    self.address_spaces[value]._AddressSpace__networks
+                )
+                address_keys = set(
+                    self.address_spaces[value]._AddressSpace__addresses
+                )
+                self.assertEqual(
+                    set(self.exported_data[value]["nested_ip_object"]),
+                    network_keys.union(address_keys),
+                    "Exported nested IP object should have the same keys as "
+                    "union of networks and address keys."
+                )
+
     def test_more_data_export(self):
         pass
         # actual_exported_data = address_space.export_data()
