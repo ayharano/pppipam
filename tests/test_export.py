@@ -134,7 +134,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
             as_address = ipaddress.ip_address(address_tuple[0])
             exported_description[as_address] = address_tuple[1]
 
-        self.expected["nested_ip_objectss"] = {
+        self.expected["nested_ip_objects"] = {
             4: {
                 ipaddress.ip_network("203.0.113.0/24"): {
                     ipaddress.ip_address("203.0.113.200"): dict(),
@@ -303,6 +303,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
 
     def test_more_data_export(self):
         """Validate export expected data."""
+        self.maxDiff = None
         for value in self.address_spaces:
             with self.subTest(value=value):
                 self.assertEqual(
