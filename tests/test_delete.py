@@ -242,7 +242,7 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                     )
 
     def test_address_space_delete_subnet_cascade_false(self):
-        """Deleting address with cascade False."""
+        """Deleting subnet with cascade False."""
         for value in self.address_spaces:
             with self.subTest(value=value):
                 for subnet_data in self.subnet_tuples:
@@ -262,4 +262,33 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                         .description(other_data[0]),
                         other_data[1],
                         "Other objects should not be affected"
+                    )
+
+    def test_address_space_delete_subnet_cascade_true(self):
+        """Deleting subnet with cascade True."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                for subnet_data in self.subnet_tuples:
+                    self.assertTrue(
+                        self.address_spaces[value].delete(
+                            ip_parameter=subnet_data[0],
+                            cascade=True,
+                        ),
+                        "Deleting a described IP object should "
+                        "return True.",
+                    )
+                for other_data in (*self.delegated_tuples,):
+                    self.assertEqual(
+                        self.address_spaces[value]
+                        .description(other_data[0]),
+                        other_data[1],
+                        "Delegated net objects should not be affected"
+                    )
+                for deleted_data in (*self.address_tuples,):
+                    self.assertEqual(
+                        self.address_spaces[value]
+                        .description(other_data[0]),
+                        '',
+                        "Description of address in subnets should be removed,"
+                        " but still in a subnet, so ''"
                     )
