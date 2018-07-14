@@ -509,7 +509,26 @@ class AddressSpace:
         return None
 
     def __gather_nested_children(self, ip_parameter):
-        pass
+
+        nested_dict = dict()
+
+        if isinstance(ip_parameter, IPAddressTuple):
+
+            pass
+
+        elif isinstance(ip_parameter, IPNetworkTuple):
+
+            if ip_parameter not in self.__children_ip_object:
+                raise ValueError("Network value should have children set")
+
+            for child in self.__children_ip_object[ip_parameter]:
+                nested_dict[child] = self.__gather_nested_children(child)
+
+        else:
+            raise TypeError(f"unexpected parameter type: {type(ip_parameter)}")
+
+        return nested_dict
+
 
     def export_data(self):
         nested_ip_objects = dict()
