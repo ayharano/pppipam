@@ -187,6 +187,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         }
 
         self.address_spaces = dict()
+        self.exported_data = dict()
 
         for strict in (False, True):
             self.address_spaces[strict] = AddressSpace(strict_=strict)
@@ -206,12 +207,16 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
                     description=address_data[1],
                 )
 
+            self.exported_data[strict] = (
+                self.address_spaces[strict].export_data()
+            )
+
     def test_address_space_export_for_more_data_instance(self):
         """Instance should evaluate to True."""
         for value in self.address_spaces:
             with self.subTest(value=value):
                 self.assertTrue(
-                    self.address_spaces[value].export_data(),
+                    self.exported_data[value],
                     "exported data should truth evaluate to True"
                 )
 
@@ -220,7 +225,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         for value in self.address_spaces:
             with self.subTest(value=value):
                 self.assertIsInstance(
-                    self.address_spaces[value].export_data(),
+                    self.exported_data[value],
                     dict,
                     "exported data should be a dict"
                 )
@@ -229,12 +234,11 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         """Instance should return dict with keys."""
         for value in self.address_spaces:
             with self.subTest(value=value):
-                exported_ = self.address_spaces[value].export_data()
                 for key in ("description", "nested_ip_object"):
                     with self.subTest(key=key):
                         self.assertIn(
                             key,
-                            exported_,
+                            self.exported_data[value],
                             "exported data should have specific key"
                         )
 
@@ -245,7 +249,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
             with self.subTest(value=value):
                 self.assertEqual(
                     keys,
-                    set(self.address_spaces[value].export_data()),
+                    set(self.exported_data[value]),
                     "exported data should have exactly required keys"
                 )
 
@@ -253,11 +257,10 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         """Instance export data dict should have two dicts."""
         for value in self.address_spaces:
             with self.subTest(value=value):
-                exported_ = self.address_spaces[value].export_data()
                 for key in ("description", "nested_ip_object"):
                     with self.subTest(key=key):
                         self.assertIsInstance(
-                            exported_[key],
+                            self.exported_data[value][key],
                             dict,
                             "exported data dict should have dicts"
                         )
@@ -267,7 +270,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
         for value in self.address_spaces:
             with self.subTest(value=value):
                 self.assertEqual(
-                    self.address_spaces[value].export_data()["description"],
+                    self.exported_data[value]["description"],
                     self.address_spaces[value]._AddressSpace__description,
                     "Exported description should be the same as instance's.",
                 )
