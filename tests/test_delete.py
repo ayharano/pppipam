@@ -354,6 +354,6 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                         self.address_spaces[value]
                         .description(deleted_data[0]),
                         None,
-                        "Description of address in subnets should be removed,"
-                        " but still in a subnet, so ''"
+                        "Description of objects in delagated should be removed,"
+                        " and no subnet, so None"
                     )
