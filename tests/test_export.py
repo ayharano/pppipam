@@ -53,6 +53,17 @@ class AddressSpace_default_export_TestCase(unittest.TestCase):
             "exported data should have exactly required keys"
         )
 
+    def test_address_space_export_for_default_instance_values(self):
+        """Default instance export data dict should have two dicts."""
+        exported_data = self.address_spaces.export_data()
+        for key in ("description", "nested_ip_object"):
+            with self.subTest(key=key):
+                self.assertIsInstance(
+                    exported_data[key],
+                    dict,
+                    "exported data dict should have dicts"
+                )
+
 
 class AddressSpace_more_data_export_TestCase(unittest.TestCase):
     """Actual-like data for AddressSpace's data export."""
