@@ -263,7 +263,7 @@ class AddressSpace:
                 self.__parent_supernet[child] = as_network
                 children_of_as_network.add(child)
                 children_of_supernet.remove(child)
-            children_of_supernet.add(as_address)
+            children_of_supernet.add(as_network)
         else:
             raise TypeError("ip_parameter must be a valid IP parameter")
 
