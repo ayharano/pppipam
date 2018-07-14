@@ -195,5 +195,48 @@ class AddressSpace_more_data_delete_TestCase(unittest.TestCase):
                     description=address_data[1],
                 )
 
-    def test_address_space_delete_for_more_data_instance(self):
-        pass
+    def test_address_space_delete_address_cascade_false(self):
+        """Deleting address with cascade True."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                for address_data in self.address_tuples:
+                    self.assertTrue(
+                        self.address_spaces[value].delete(
+                            ip_parameter=address_data[0],
+                            cascade=False,
+                        ),
+                        "Deleting a described IP object should "
+                        "return True.",
+                    )
+                for network_data in (
+                    *self.delegated_tuples, *self.subnet_tuples
+                ):
+                    self.assertEqual(
+                        self.address_spaces[value]
+                        .description(network_data[0]),
+                        network_data[1],
+                        "Networks should not be affected"
+                    )
+
+    def test_address_space_delete_for_address(self):
+        """Deleting address with cascade False."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                for address_data in self.address_tuples:
+                    self.assertTrue(
+                        self.address_spaces[value].delete(
+                            ip_parameter=address_data[0],
+                            cascade=False,
+                        ),
+                        "Deleting a described IP object should "
+                        "return True.",
+                    )
+                for network_data in (
+                    *self.delegated_tuples, *self.subnet_tuples
+                ):
+                    self.assertEqual(
+                        self.address_spaces[value]
+                        .description(network_data[0]),
+                        network_data[1],
+                        "Networks should not be affected"
+                    )
