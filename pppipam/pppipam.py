@@ -517,6 +517,9 @@ class AddressSpace:
 
         return None
 
+    def delete(self):
+        pass
+
     def __gather_nested_children(
        self, ip_object: IPObject
     ) -> typing.Dict[IPObject, dict]:
