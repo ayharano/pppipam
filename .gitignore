@@ -19,3 +19,8 @@ __pycache__
 # Ignoring vim files
 *~
 *.sw[po]
+
+# Ignoring build byproducts
+build/
+dist/
+*.egg-info/
