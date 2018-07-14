@@ -529,6 +529,8 @@ class AddressSpace:
 
         if as_address in self.__description:
             return True
+        elif as_network in self.__description:
+            return True
 
         raise IPObjectNotInSpaceError("cannot delete undescribed IP object")
 
