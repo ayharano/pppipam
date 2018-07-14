@@ -508,6 +508,9 @@ class AddressSpace:
 
         return None
 
+    def __gather_nested_children(self, ip_parameter):
+        pass
+
     def export_data(self):
         nested_ip_objects = dict()
 
@@ -522,7 +525,7 @@ class AddressSpace:
             for version in children_per_version:
                 version_nest = nested_ip_objects.setdefault(version, dict())
                 for child in children_per_version[version]:
-                    pass
+                    version_nest[child] = self.__gather_nested_children(child)
 
         return dict({
             "description": dict(self.__description),
