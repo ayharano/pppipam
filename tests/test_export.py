@@ -206,6 +206,72 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
                     description=address_data[1],
                 )
 
+    def test_address_space_export_for_more_data_instance(self):
+        """Instance should evaluate to True."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                self.assertTrue(
+                    self.address_spaces[value].export_data(),
+                    "exported data should truth evaluate to True"
+                )
+
+    def test_address_space_export_for_more_data_instance_should_be_dict(self):
+        """Instance should return dict with default values."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                self.assertIsInstance(
+                    self.address_spaces[value].export_data(),
+                    dict,
+                    "exported data should be a dict"
+                )
+
+    def test_address_space_export_for_more_data_instance_should_have_keys(self):
+        """Instance should return dict with keys."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                exported_ = self.address_spaces[value].export_data()
+                for key in ("description", "nested_ip_object"):
+                    with self.subTest(key=key):
+                        self.assertIn(
+                            key,
+                            exported_,
+                            "exported data should have specific key"
+                        )
+
+    def test_address_space_export_for_more_data_instance_exact_keys(self):
+        """Instance should return dict with keys."""
+        keys = set({"description", "nested_ip_object"})
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                self.assertEqual(
+                    keys,
+                    set(self.address_spaces[value].export_data()),
+                    "exported data should have exactly required keys"
+                )
+
+    def test_address_space_export_for_more_data_instance_values(self):
+        """Instance export data dict should have two dicts."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                exported_ = self.address_spaces[value].export_data()
+                for key in ("description", "nested_ip_object"):
+                    with self.subTest(key=key):
+                        self.assertIsInstance(
+                            exported_[key],
+                            dict,
+                            "exported data dict should have dicts"
+                        )
+
+    def test_address_space_export_description_should_be_the_same(self):
+        """Exported description should be the same as instance's."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                self.assertEqual(
+                    self.address_spaces[value].export_data()["description"],
+                    self.address_spaces[value]._AddressSpace__description,
+                    "Exported description should be the same as instance's.",
+                )
+
     def test_more_data_export(self):
         pass
         # actual_exported_data = address_space.export_data()
