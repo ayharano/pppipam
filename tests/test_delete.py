@@ -86,3 +86,29 @@ class AddressSpace_delete_TestCase(unittest.TestCase):
                     ),
                     "Deleting a described IP object should return True.",
                 )
+
+
+    def test_delete_after_deleting_object_description_should_be_none(self):
+        """Deleting a described IP object should return True."""
+        for parameter_description in (
+            ("203.0.113.128", "an IPv4 test net address"),
+        ):
+            with self.subTest(parameter_description=parameter_description):
+                self.assertTrue(
+                    self.address_space.describe(
+                        ip_parameter=parameter_description[0],
+                        description=parameter_description[1],
+                    )
+                )
+                self.assertTrue(
+                    self.address_space.delete(
+                        ip_parameter=parameter_description[0],
+                        cascade=True,
+                    ),
+                    "Deleting a described IP object should return True.",
+                )
+                self.assertIs(
+                    self.address_space.description(parameter_description[0]),
+                    None,
+                    "No IP object, so description should be None",
+                )
