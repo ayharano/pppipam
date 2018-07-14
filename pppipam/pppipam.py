@@ -70,8 +70,10 @@ class AddressSpace:
         # None is address space top supernet parent.
         self.__children_ip_object[None] = set()
 
-    def __get_supernet(self, cleaned_ip_object):
-        """Retrieves the smallest supernet of IP object, if it exists.
+    def __get_supernet(
+        self, cleaned_ip_object: IPObject
+    ) -> typing.Optional[IPNetwork]:
+        """Retrieves the smallest supernet of IP object, if described.
 
         Args:
             cleaned_ip_object: IP object to be verified.
@@ -112,7 +114,18 @@ class AddressSpace:
 
         return current_tentative
 
-    def __remove_ip_object(self, ip_object):
+    def __remove_ip_object(self, ip_object: IPObject) -> bool:
+        """Adjust private variables to remove an IP object.
+
+        Args:
+            ip_object: IP object registered in address space.
+
+        Returns:
+            bool if successfully removed.
+
+        Raises:
+            TypeError: parameters not of expected type.
+        """
 
         if ip_object not in self.__description:
             raise IPObjectNotInSpaceError(
@@ -154,7 +167,21 @@ class AddressSpace:
 
         return True
 
-    def __cascading_remove_ip_network(self, ip_network_object):
+    def __cascading_remove_ip_network(
+        self, ip_network_object: IPNetwork
+    ) -> bool:
+        """Recursively removes children IP objects and itself.
+
+        Args:
+            ip_network_object: IP Network object registered in
+                               address space.
+
+        Returns:
+            bool if successfully removed.
+
+        Raises:
+            TypeError: parameters not of expected type.
+        """
 
         children = list(self.__children_ip_object[ip_network_object])
 
@@ -343,8 +370,8 @@ class AddressSpace:
         return described
 
     def describe_new_delegated_network(
-        self, *, network_parameter, description
-    ):
+        self, *, network_parameter: IPNetworkParameter, description: str
+    ) -> bool:
         """Describe a new delegated network, if possible.
 
         Args:
@@ -581,7 +608,22 @@ class AddressSpace:
 
         return None
 
-    def delete(self, *, ip_parameter, cascade):
+    def delete(self, *, ip_parameter: IPParameter, cascade: bool) -> bool:
+        """Delete only described IP object and optionally its children.
+
+        Args:
+            ip_parameter: value to be processed as an IP address or
+                          an IP network.
+            cascade: if evaluated as True, deletes children IP objects.
+
+        Returns:
+            bool if successfully removed.
+
+        Raises:
+            TypeError: parameters not of expected type.
+            IPObjectNotInSpaceError: if a tentative IP object is
+                                     not registered.
+        """
 
         as_address = clean_address(ip_parameter)
         as_network = clean_network(ip_parameter)
