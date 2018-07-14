@@ -125,8 +125,8 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
             ("192.0.2.234", "234 of 1/2 of a test subnet"),
         )
 
-        self.exported = dict()
-        exported_description = self.exported.setdefault("description", dict())
+        self.expected = dict()
+        exported_description = self.expected.setdefault("description", dict())
         for net_tuple in (*self.delegated_tuples, *self.subnet_tuples):
             as_network = ipaddress.ip_network(net_tuple[0])
             exported_description[as_network] = net_tuple[1]
@@ -134,7 +134,7 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
             as_address = ipaddress.ip_address(address_tuple[0])
             exported_description[as_address] = address_tuple[1]
 
-        self.exported["nested_ip_objectss"] = {
+        self.expected["nested_ip_objectss"] = {
             4: {
                 ipaddress.ip_network("203.0.113.0/24"): {
                     ipaddress.ip_address("203.0.113.200"): dict(),
@@ -302,13 +302,11 @@ class AddressSpace_more_data_export_TestCase(unittest.TestCase):
                 )
 
     def test_more_data_export(self):
-        pass
-        # actual_exported_data = address_space.export_data()
-        # self.assertTrue(
-        #     actual_exported_data, "should be evaluated as True"
-        # )
-        # self.assertEqual(
-        #     exported["description"],
-        #     actual_exported_data["description"],
-        #     "exported description data should match",
-        # )
+        """Validate export expected data."""
+        for value in self.address_spaces:
+            with self.subTest(value=value):
+                self.assertEqual(
+                    self.exported_data[value],
+                    self.expected,
+                    "exported description data should match",
+                )
